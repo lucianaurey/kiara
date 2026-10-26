@@ -7,15 +7,15 @@ Página de cumpleaños hecha con Streamlit, con el tema de un cielo de estrellas
 | # | Sección | Qué pasa |
 |---|---------|----------|
 | 1 | **Inicio** | Pantalla negra, las frases se escriben solas y aparece una estrella. Al tocarla hay una explosión de luz, se enciende el cielo y empieza la música. |
-| 2 | **Su nombre en constelación** | Las estrellas dibujan "Kiara" una por una, y aparece cuántas vueltas al sol cumple. |
+| 2 | **Su nombre en constelación** | Estilo atlas antiguo: las estrellas dibujan "Kiara" una por una y luego aparece la figura de su nombre detrás, como en los mapas del cielo. |
 | 3 | **Lejos, pero juntas** | Un mapa con un corazón que viaja entre las dos ciudades, los km que las separan y números como los días de amistad. |
-| 4 | **Nuestra historia** | Línea del tiempo con fotos estilo polaroid que se ilumina mientras bajas. |
+| 4 | **Nuestra historia** | Un libro que pasa páginas de verdad: un capítulo por momento, con su foto polaroid. En celular se pasa una página a la vez (también deslizando). |
 | 5 | **Cielo de mensajes** | Una estrella por amigo. Cada una abre su carta, foto o video, y al abrirlas todas se desbloquea un mensaje secreto. |
 | 6 | **Banda sonora** | Sus canciones de Spotify, cada una con el "por qué". |
 | 7 | **Razones por las que te quiero** | Cada estrella fugaz trae una razón. |
-| 8 | **El pastel** | Sopla al micrófono (o toca las velas) para apagarlas. Sale confeti y "¡Pide un deseo!". |
+| 8 | **El pastel** | Las velas forman su edad ("20"). Sopla al micrófono (o tócalas) para apagarlas. Sale confeti y "¡pide un deseo!". |
 | 9 | **La carta** | Un sobre con sello que se abre, y la carta aparece párrafo por párrafo. |
-| 10 | **Final** | "Te quiero hasta las estrellas y de regreso", con lluvia de estrellas. |
+| 10 | **Final** | "Te quiero hasta las estrellas y de regreso", firmado a mano con "always under the same sky", y lluvia de estrellas. |
 
 ## ✏️ Cómo poner tus cosas
 

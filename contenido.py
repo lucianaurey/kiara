@@ -19,11 +19,15 @@ DATOS = {
     # Fecha del cumple (AAAA-MM-DD). Antes de ese día la página muestra
     # una cuenta regresiva. Déjalo "" para que se abra siempre.
     # (Tú puedes verla antes entrando con  ?ver  al final del link)
-    "fecha_cumple": "",
+    "fecha_cumple": "2026-11-06",
     # Su fecha de nacimiento, para calcular sus "vueltas al sol" ("" si no quieres)
-    "nacimiento": "2004-11-15",
-    # Desde cuándo son amigas (para contar los días de amistad)
-    "inicio_amistad": "2015-03-01",
+    "nacimiento": "2006-11-06",
+    # Cómo se escribe su edad en la nota a mano ("feliz cumple veinte, mi vida")
+    "edad_en_letras": "veinte",
+    # Desde cuándo son amigas. Pon una fecha (AAAA-MM-DD) para contar los días,
+    # o déjala "" y se muestra el texto de "amigas_desde".
+    "inicio_amistad": "",
+    "amigas_desde": "5.º de primaria",
 
     # Canción de fondo que suena al tocar la estrella (archivo .mp3 en static/musica/)
     # Spotify no deja reproducir de fondo, por eso esta va como archivo.
@@ -40,42 +44,50 @@ DATOS = {
 
     # ---------- 2. La distancia ----------
     "ubicaciones": {
-        "tu": {"ciudad": "Lima", "lat": -12.0464, "lon": -77.0428},       # 👈 tu ciudad
-        "ella": {"ciudad": "Madrid", "lat": 40.4168, "lon": -3.7038},     # 👈 su ciudad
+        "tu": {"ciudad": "Cochabamba", "lat": -17.3895, "lon": -66.1568},
+        "ella": {"ciudad": "Aguascalientes", "lat": 21.8853, "lon": -102.2916},
     },
     # (Busca "coordenadas de <ciudad>" en Google para sacar lat y lon)
 
-    # ---------- 3. Nuestra historia ----------
+    # ---------- 3. Nuestra historia (un libro que pasa páginas) ----------
+    # Cada capítulo ocupa dos páginas: el texto y su foto.
+    # Lo que está entre [corchetes] cámbialo por tus recuerdos reales.
     "historia": [
         {
-            "fecha": "2015",
-            "titulo": "El día que nos conocimos",
-            "texto": "Nadie sabía que ese día empezaba la amistad más bonita de mi vida.",
-            "foto": "",  # ej: "fotos/2015.jpg"
+            "titulo": "Segundo de primaria",
+            "texto": "Yo tenía ocho años la primera vez que te vi. Todavía no sabía que esa niña iba a convertirse en mi persona favorita del universo.",
+            "nota": "¿te acuerdas de [ese día]?",
+            "foto": "",  # ej: "fotos/primaria.jpg"
+            "pie": "las dos, chiquitas",
         },
         {
-            "fecha": "2017",
-            "titulo": "Nuestro primer viaje juntas",
-            "texto": "Nos perdimos, nos reímos hasta llorar y prometimos repetirlo mil veces.",
+            "titulo": "Quinto de primaria",
+            "texto": "Ahí empezó todo de verdad. Un día dejaste de ser la niña de mi salón y te volviste mi amiga.",
+            "nota": "[nuestro primer recuerdo juntas]",
             "foto": "",
+            "pie": "aquí empezamos",
         },
         {
-            "fecha": "2019",
-            "titulo": "Ese chiste que solo entendemos nosotras",
-            "texto": "Hasta hoy no puedo escucharlo sin acordarme de ti.",
+            "titulo": "Primero de secundaria",
+            "texto": "Desde ese año fuimos inseparables: los recreos, los secretos y las risas que nadie más entendía.",
+            "nota": "[el chiste que solo es nuestro]",
             "foto": "",
+            "pie": "inseparables",
         },
         {
-            "fecha": "2022",
-            "titulo": "El día que te fuiste lejos",
-            "texto": "Lloré en el aeropuerto, pero aprendí que la distancia no cambia nada de lo importante.",
+            "titulo": "5 878 kilómetros",
+            "texto": "Ahora tú estás en Aguascalientes y yo en Cochabamba. Cambió el mapa, pero no cambió nada de lo importante.",
+            "nota": "y seguimos mirando el mismo cielo",
             "foto": "",
+            "pie": "lejos, pero juntas",
+            "coordenadas": True,  # muestra las coordenadas de las dos ciudades
         },
         {
-            "fecha": "Hoy",
-            "titulo": "Y aquí seguimos",
-            "texto": "Miles de kilómetros, mil videollamadas y el mismo cariño de siempre.",
+            "titulo": "Veinte",
+            "texto": "Hoy cumples veinte años. Veinte vueltas al sol, y yo tuve la suerte de acompañarte en más de la mitad.",
+            "nota": "cierra los ojos y pide un deseo",
             "foto": "",
+            "pie": "feliz cumple, mi vida",
         },
     ],
 
@@ -83,11 +95,11 @@ DATOS = {
     # video: link de YouTube / Google Drive, o "videos/archivo.mp4"
     "mensajes": [
         {"de": "Mamá de Kiara", "desde": "Casa", "texto": "Mi niña hermosa, feliz cumpleaños. Te extrañamos cada día.", "foto": "", "video": ""},
-        {"de": "Amigo 1", "desde": "Lima", "texto": "¡Feliz cumple, Kiara! Aquí te seguimos esperando para la próxima fiesta.", "foto": "", "video": ""},
+        {"de": "Amigo 1", "desde": "Cochabamba", "texto": "¡Feliz cumple, Kiara! Aquí te seguimos esperando para la próxima fiesta.", "foto": "", "video": ""},
         {"de": "Amiga 2", "desde": "Cusco", "texto": "Eres de las personas más lindas que conozco. Que este año te dé todo lo que mereces.", "foto": "", "video": ""},
         {"de": "Amigo 3", "desde": "Buenos Aires", "texto": "Feliz vuelta al sol 🌞 ¡Un abrazo enorme desde aquí!", "foto": "", "video": ""},
         {"de": "Amiga 4", "desde": "Bogotá", "texto": "Gracias por siempre escucharme. Te quiero muchísimo.", "foto": "", "video": ""},
-        {"de": "Amigo 5", "desde": "Madrid", "texto": "¡Que vivan los 22! Hoy invito yo el café ☕", "foto": "", "video": ""},
+        {"de": "Amigo 5", "desde": "Aguascalientes", "texto": "¡Que vivan los 20! Hoy invito yo el café ☕", "foto": "", "video": ""},
     ],
     # Mensaje que se desbloquea cuando abre TODAS las estrellas
     "mensaje_secreto": "Abriste todas las estrellas ✨ Todas estas personas te quieren, y yo más que nadie.",
@@ -113,7 +125,7 @@ DATOS = {
     ],
 
     # ---------- 7. El pastel ----------
-    "velas": 5,  # cuántas velas tiene el pastel (máximo 10)
+    "velas": "20",  # las velas forman este número
     "deseo": "Ojalá este año te traiga todo lo que sueñas... y un pasaje para volver a vernos pronto ✈️",
 
     # ---------- 8. La carta final ----------
@@ -123,10 +135,12 @@ Hoy es tu día, y aunque no pueda darte un abrazo en persona, quería regalarte 
 
 Gracias por cada risa, cada consejo, cada llamada a deshoras y por quedarte, aunque estemos lejos.
 
-Eres mi mejor amiga, mi hermana elegida, mi todo.
+Desde segundo de primaria hasta hoy, eres mi mejor amiga, mi hermana elegida, mi todo.
 
 Feliz cumpleaños. Te quiero infinito.""",
 
     # Frase final gigante
     "final": "Te quiero hasta las estrellas y de regreso",
+    # Frase que va debajo, como firmada a mano
+    "final_firma": "always under the same sky",
 }
