@@ -1,0 +1,12 @@
+[server]
+enableStaticServing = true
+headless = true
+
+[theme]
+base = "dark"
+backgroundColor = "#060716"
+primaryColor = "#f6d98f"
+
+[client]
+toolbarMode = "minimal"
+showSidebarNavigation = false

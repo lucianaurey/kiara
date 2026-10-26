@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Un cielo para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --noche: #060716;
+  --noche-2: #120d33;
+  --violeta: #2a1b5e;
+  --oro: #f6d98f;
+  --oro-2: #ffe9b8;
+  --lila: #b9a7ff;
+  --rosa: #ff9ecf;
+  --texto: #ece8ff;
+  --texto-suave: #b4add6;
+  --vidrio: rgba(255, 255, 255, 0.06);
+  --borde: rgba(255, 255, 255, 0.12);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --script: 'Great Vibes', cursive;
+  --sans: 'Quicksand', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: radial-gradient(ellipse at 20% 0%, #1d1450 0%, transparent 55%),
+              radial-gradient(ellipse at 90% 40%, #2b1046 0%, transparent 50%),
+              radial-gradient(ellipse at 10% 90%, #0f2148 0%, transparent 50%),
+              var(--noche);
+  background-attachment: fixed;
+  color: var(--texto);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body.bloqueado { overflow: hidden; }
+#cielo { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+#confeti { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 60; pointer-events: none; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+
+/* ============ INTRO ============ */
+#intro {
+  position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; padding: 24px;
+  background: #020208; transition: opacity 1.6s ease, background 1.6s ease;
+}
+#intro.fuera { opacity: 0; pointer-events: none; }
+#intro-texto { max-width: 640px; min-height: 9em; }
+#intro-texto p {
+  font-family: var(--serif); font-style: italic; font-size: clamp(1.3rem, 4.5vw, 2rem);
+  line-height: 1.5; color: var(--texto); margin: 0.3em 0; opacity: 0.95;
+}
+#intro-texto p.cursor::after { content: '▍'; color: var(--oro); animation: parpadeo 1s steps(1) infinite; margin-left: 2px; }
+@keyframes parpadeo { 50% { opacity: 0; } }
+#estrella-inicio {
+  margin-top: 36px; width: 120px; height: 120px; position: relative;
+  opacity: 0; transform: scale(0.4); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2,1.6,.4,1);
+}
+#estrella-inicio.visible { opacity: 1; transform: scale(1); }
+#estrella-inicio .nucleo {
+  position: absolute; inset: 0; margin: auto; width: 26px; height: 26px; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, var(--oro-2) 35%, rgba(246,217,143,0) 70%);
+  box-shadow: 0 0 30px 10px rgba(246,217,143,.55), 0 0 90px 30px rgba(185,167,255,.35);
+  animation: latido 2.2s ease-in-out infinite;
+}
+#estrella-inicio .rayo {
+  position: absolute; left: 50%; top: 50%; width: 120px; height: 2px; margin: -1px 0 0 -60px;
+  background: linear-gradient(90deg, transparent, rgba(255,240,200,.9), transparent);
+  animation: latido 2.2s ease-in-out infinite;
+}
+#estrella-inicio .rayo.v { transform: rotate(90deg); }
+#estrella-inicio .rayo.d1 { transform: rotate(45deg) scaleX(.5); }
+#estrella-inicio .rayo.d2 { transform: rotate(-45deg) scaleX(.5); }
+@keyframes latido { 0%,100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.25); opacity: 1; } }
+#estrella-inicio .rayo.v { animation-name: latidoV; }
+#estrella-inicio .rayo.d1 { animation-name: latidoD1; }
+#estrella-inicio .rayo.d2 { animation-name: latidoD2; }
+@keyframes latidoV { 0%,100% { transform: rotate(90deg) scaleX(1); } 50% { transform: rotate(90deg) scaleX(1.2); } }
+@keyframes latidoD1 { 0%,100% { transform: rotate(45deg) scaleX(.45); } 50% { transform: rotate(45deg) scaleX(.6); } }
+@keyframes latidoD2 { 0%,100% { transform: rotate(-45deg) scaleX(.45); } 50% { transform: rotate(-45deg) scaleX(.6); } }
+#pista-inicio {
+  margin-top: 18px; font-size: .95rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--oro); opacity: 0; transition: opacity 1s ease 0.6s;
+}
+#estrella-inicio.visible + #pista-inicio { opacity: .85; }
+#flash {
+  position: fixed; inset: 0; z-index: 55; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at center, #fff 0%, #ffe9b8 30%, rgba(185,167,255,.6) 60%, transparent 100%);
+}
+#flash.boom { animation: boom 1.8s ease-out forwards; }
+@keyframes boom { 0% { opacity: 0; transform: scale(.2); } 20% { opacity: 1; transform: scale(1.4); } 100% { opacity: 0; transform: scale(2.5); } }
+#saltar { position: absolute; bottom: 24px; right: 24px; font-size: .8rem; color: var(--texto-suave); opacity: .6; }
+
+/* Cuenta regresiva */
+.cuenta { display: flex; gap: clamp(10px, 3vw, 24px); justify-content: center; margin-top: 28px; }
+.cuenta div { min-width: 70px; padding: 14px 10px; border: 1px solid var(--borde); border-radius: 16px; background: var(--vidrio); }
+.cuenta b { display: block; font-family: var(--serif); font-size: clamp(2rem, 7vw, 3.2rem); color: var(--oro); line-height: 1; }
+.cuenta span { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--texto-suave); }
+
+/* ============ ESTRUCTURA ============ */
+main { position: relative; z-index: 1; opacity: 0; transition: opacity 2s ease; }
+main.visible { opacity: 1; }
+section { min-height: 100vh; padding: 96px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+.contenedor { width: 100%; max-width: 1040px; margin: 0 auto; }
+.etiqueta { font-size: .8rem; letter-spacing: .35em; text-transform: uppercase; color: var(--oro); text-align: center; margin-bottom: 14px; }
+h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.2rem, 6vw, 3.8rem); text-align: center; line-height: 1.1; margin-bottom: 16px; }
+h2 em { font-family: var(--script); font-style: normal; font-weight: 400; color: var(--oro); font-size: 1.25em; }
+.bajada { text-align: center; color: var(--texto-suave); font-size: clamp(1rem, 2.6vw, 1.15rem); max-width: 560px; margin: 0 auto 48px; line-height: 1.6; }
+.revelar { opacity: 0; transform: translateY(40px); transition: opacity 1.1s ease, transform 1.1s cubic-bezier(.2,.8,.2,1); }
+.revelar.dentro { opacity: 1; transform: none; }
+
+/* ============ HERO ============ */
+#hero { text-align: center; }
+#hero .pre { font-family: var(--script); font-size: clamp(2.4rem, 8vw, 4.5rem); color: var(--oro); text-shadow: 0 0 30px rgba(246,217,143,.4); }
+#constelacion { width: min(100%, 1000px); height: clamp(170px, 34vw, 360px); display: block; margin: 0 auto; }
+#hero .sub { font-family: var(--serif); font-style: italic; font-size: clamp(1.2rem, 3.4vw, 1.7rem); color: var(--texto); max-width: 620px; margin: 6px auto 0; line-height: 1.5; }
+#hero .vuelta { margin-top: 22px; display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 999px; border: 1px solid var(--borde); background: var(--vidrio); color: var(--oro-2); font-size: .95rem; }
+.bajar { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: var(--texto-suave); font-size: .75rem; letter-spacing: .3em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.bajar i { width: 1px; height: 46px; background: linear-gradient(var(--oro), transparent); animation: caer 2s ease-in-out infinite; }
+@keyframes caer { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ============ DISTANCIA ============ */
+#mapa { width: 100%; max-width: 720px; display: block; margin: 0 auto; overflow: visible; }
+#mapa .arco { fill: none; stroke: url(#gradArco); stroke-width: 2; stroke-dasharray: 6 8; }
+#mapa .punto { fill: var(--oro); filter: drop-shadow(0 0 8px var(--oro)); }
+#mapa text { fill: var(--texto); font-family: var(--sans); font-size: 14px; text-anchor: middle; }
+#mapa text.quien { fill: var(--texto-suave); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+.km { text-align: center; margin-top: 24px; }
+.km b { font-family: var(--serif); font-size: clamp(3rem, 12vw, 6rem); color: var(--oro); line-height: 1; text-shadow: 0 0 40px rgba(246,217,143,.35); }
+.km span { display: block; color: var(--texto-suave); letter-spacing: .2em; text-transform: uppercase; font-size: .85rem; margin-top: 4px; }
+.mismo-cielo { text-align: center; font-family: var(--serif); font-style: italic; font-size: clamp(1.4rem, 4vw, 2rem); margin-top: 28px; }
+.numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 56px; }
+.numero { text-align: center; padding: 26px 16px; border-radius: 22px; border: 1px solid var(--borde); background: var(--vidrio); backdrop-filter: blur(6px); }
+.numero b { display: block; font-family: var(--serif); font-size: 2.6rem; color: var(--oro-2); line-height: 1.1; }
+.numero span { color: var(--texto-suave); font-size: .92rem; }
+
+/* ============ HISTORIA ============ */
+.linea { position: relative; max-width: 960px; margin: 0 auto; padding: 20px 0; }
+.linea::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(255,255,255,.08); }
+.linea .progreso { position: absolute; left: 50%; top: 0; width: 2px; margin-left: -1px; height: 0; background: linear-gradient(var(--lila), var(--oro), var(--rosa)); box-shadow: 0 0 12px var(--oro); }
+.hito { position: relative; width: 50%; padding: 0 48px 72px; }
+.hito:nth-child(odd) { margin-left: 50%; }
+.hito:nth-child(even) { text-align: right; }
+.hito::before { content: ''; position: absolute; top: 14px; width: 14px; height: 14px; border-radius: 50%; background: var(--oro); box-shadow: 0 0 0 6px rgba(246,217,143,.15), 0 0 24px var(--oro); }
+.hito:nth-child(odd)::before { left: -7px; }
+.hito:nth-child(even)::before { right: -7px; }
+.hito .fecha { font-family: var(--script); font-size: 2.2rem; color: var(--oro); line-height: 1; }
+.hito h3 { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; margin: 6px 0 8px; }
+.hito p { color: var(--texto-suave); line-height: 1.6; }
+.polaroid {
+  display: inline-block; margin-top: 18px; padding: 10px 10px 34px; background: #fbf8f1; border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.45); transform: rotate(-3deg); transition: transform .5s ease;
+  max-width: 300px; width: 100%;
+}
+.hito:nth-child(even) .polaroid { transform: rotate(3deg); }
+.polaroid:hover { transform: rotate(0) scale(1.04); }
+.polaroid img, .polaroid .sin-foto { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 2px; }
+.sin-foto { background: linear-gradient(135deg, #d9cff7, #fbd3e6); display: flex !important; align-items: center; justify-content: center; flex-direction: column; color: #6b5ca5; font-size: .85rem; gap: 6px; }
+.sin-foto::before { content: '📷'; font-size: 1.8rem; }
+
+/* ============ CIELO DE MENSAJES ============ */
+.cielo-mensajes { position: relative; width: 100%; max-width: 1040px; height: clamp(440px, 72vh, 660px); margin: 0 auto; border-radius: 32px; border: 1px solid var(--borde); background: radial-gradient(ellipse at center, rgba(42,27,94,.55), rgba(6,7,22,.3) 70%); overflow: hidden; }
+.astro { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px; }
+.astro .luz { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle, #fff 0%, var(--oro-2) 40%, rgba(246,217,143,0) 72%); box-shadow: 0 0 18px 6px rgba(246,217,143,.55); animation: titilar 3s ease-in-out infinite; transition: transform .3s ease; }
+.astro:hover .luz, .astro:focus-visible .luz { transform: scale(1.8); }
+.astro .nom { font-size: .78rem; color: var(--texto-suave); white-space: nowrap; letter-spacing: .05em; transition: color .3s; }
+.astro:hover .nom { color: var(--oro-2); }
+.astro.abierta .luz { background: radial-gradient(circle, #fff 0%, var(--rosa) 40%, rgba(255,158,207,0) 72%); box-shadow: 0 0 18px 6px rgba(255,158,207,.5); animation: none; }
+.astro.abierta .nom::after { content: ' ♥'; color: var(--rosa); }
+@keyframes titilar { 0%,100% { opacity: .75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); } }
+.contador { text-align: center; margin-top: 20px; color: var(--texto-suave); }
+.contador b { color: var(--oro); }
+.secreto { max-width: 620px; margin: 24px auto 0; text-align: center; padding: 22px; border-radius: 22px; border: 1px solid rgba(255,158,207,.4); background: rgba(255,158,207,.08); font-family: var(--serif); font-size: 1.35rem; font-style: italic; display: none; }
+.secreto.visible { display: block; animation: aparecer 1s ease; }
+@keyframes aparecer { from { opacity: 0; transform: scale(.9); } }
+
+/* Modal */
+#modal { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(3,3,12,.75); backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+#modal.abierto { opacity: 1; pointer-events: auto; }
+.tarjeta { position: relative; width: 100%; max-width: 560px; max-height: 88vh; overflow-y: auto; padding: 36px 28px 28px; border-radius: 28px; background: linear-gradient(160deg, #1d1648, #0d0b26); border: 1px solid var(--borde); box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(185,167,255,.15); transform: translateY(30px) scale(.96); transition: transform .5s cubic-bezier(.2,1.2,.3,1); }
+#modal.abierto .tarjeta { transform: none; }
+.tarjeta .cerrar { position: absolute; top: 14px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: var(--vidrio); font-size: 1.2rem; }
+.tarjeta .de { font-family: var(--script); font-size: 2.6rem; color: var(--oro); line-height: 1; }
+.tarjeta .desde { color: var(--texto-suave); font-size: .85rem; letter-spacing: .15em; text-transform: uppercase; margin: 6px 0 18px; }
+.tarjeta .msg { font-family: var(--serif); font-size: 1.35rem; line-height: 1.55; white-space: pre-line; }
+.tarjeta img, .tarjeta video, .tarjeta iframe { width: 100%; border-radius: 16px; margin-top: 18px; display: block; border: 0; }
+.tarjeta iframe { aspect-ratio: 16/9; height: auto; }
+
+/* ============ MÚSICA ============ */
+.playlist { max-width: 760px; margin: 0 auto 32px; }
+.canciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.cancion { padding: 20px; border-radius: 24px; border: 1px solid var(--borde); background: var(--vidrio); display: flex; flex-direction: column; gap: 14px; }
+.cancion .cab { display: flex; align-items: center; gap: 14px; }
+.vinilo { flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%; background: repeating-radial-gradient(circle, #111 0 2px, #222 2px 4px); position: relative; animation: girar 4s linear infinite; box-shadow: 0 4px 14px rgba(0,0,0,.5); }
+.vinilo::after { content: ''; position: absolute; inset: 0; margin: auto; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--rosa), var(--oro)); }
+@keyframes girar { to { transform: rotate(360deg); } }
+.cancion h3 { font-family: var(--serif); font-size: 1.45rem; font-weight: 600; }
+.cancion p { color: var(--texto-suave); line-height: 1.5; font-style: italic; }
+.spotify { width: 100%; border: 0; border-radius: 14px; }
+.spotify-vacio { padding: 18px; border-radius: 14px; border: 1px dashed var(--borde); color: var(--texto-suave); font-size: .85rem; text-align: center; }
+
+/* ============ RAZONES ============ */
+.cielo-razones { position: relative; width: 100%; max-width: 820px; min-height: 300px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.razon { max-width: 620px; text-align: center; font-family: var(--serif); font-size: clamp(1.6rem, 4.5vw, 2.4rem); line-height: 1.35; min-height: 3.5em; display: flex; align-items: center; justify-content: center; transition: opacity .6s ease, transform .6s ease; }
+.razon.oculta { opacity: 0; transform: translateY(16px); }
+.razon-num { color: var(--oro); font-size: .85rem; letter-spacing: .3em; text-transform: uppercase; margin-bottom: 14px; min-height: 1.2em; }
+.boton { margin-top: 34px; display: inline-flex; align-items: center; gap: 10px; padding: 16px 30px; border-radius: 999px; font-weight: 600; font-size: 1.02rem; color: #1b1240; background: linear-gradient(135deg, var(--oro-2), var(--oro) 50%, #f3b8d6); box-shadow: 0 10px 30px rgba(246,217,143,.3); transition: transform .25s ease, box-shadow .25s ease; }
+.boton:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(246,217,143,.45); }
+.boton.sec { background: var(--vidrio); color: var(--texto); border: 1px solid var(--borde); box-shadow: none; }
+.fugaz { position: fixed; z-index: 40; width: 220px; height: 2px; pointer-events: none; background: linear-gradient(90deg, rgba(255,255,255,0), #fff); border-radius: 2px; filter: drop-shadow(0 0 6px #fff); }
+.fugaz::after { content: ''; position: absolute; right: -4px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 16px 6px rgba(255,233,184,.9); }
+
+/* ============ PASTEL ============ */
+.pastel { position: relative; width: 300px; max-width: 86vw; margin: 60px auto 0; aspect-ratio: 300/260; }
+.pastel .plato { position: absolute; bottom: 0; left: -6%; width: 112%; height: 8%; border-radius: 50%; background: linear-gradient(#e8e4f5, #a9a3c4); box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.pastel .piso { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 14px 14px 10px 10px; }
+.pastel .p1 { bottom: 5%; width: 100%; height: 38%; background: linear-gradient(90deg, #c26ba3, #e793c2 40%, #c26ba3); }
+.pastel .p2 { bottom: 41%; width: 74%; height: 30%; background: linear-gradient(90deg, #7f63d3, #a891f0 40%, #7f63d3); }
+.pastel .glaseado { position: absolute; left: 0; right: 0; top: -2px; height: 34%; border-radius: 14px 14px 0 0; background: #fff4fa;
+  -webkit-mask: radial-gradient(circle at 10px 100%, transparent 9px, #000 10px) 0 0/20px 100% repeat-x, linear-gradient(#000, #000) 0 0/100% 60% no-repeat;
+          mask: radial-gradient(circle at 10px 100%, transparent 9px, #000 10px) 0 0/20px 100% repeat-x, linear-gradient(#000, #000) 0 0/100% 60% no-repeat; }
+.pastel .velas { position: absolute; bottom: 70%; left: 50%; transform: translateX(-50%); width: 68%; display: flex; justify-content: space-evenly; align-items: flex-end; }
+.vela { position: relative; width: 10px; height: 46px; border-radius: 3px; background: repeating-linear-gradient(45deg, #fff 0 5px, var(--rosa) 5px 10px); cursor: pointer; }
+.vela .llama { position: absolute; left: 50%; bottom: 100%; width: 14px; height: 24px; margin-left: -7px; margin-bottom: 3px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(ellipse at 50% 75%, #fff 0%, #ffe28a 35%, #ff9a3c 70%, rgba(255,120,40,0) 100%); box-shadow: 0 0 22px 8px rgba(255,200,90,.55); animation: llama .18s ease-in-out infinite alternate; transform-origin: 50% 100%; transition: opacity .3s ease, transform .3s ease; }
+@keyframes llama { from { transform: scaleY(1) rotate(-2deg); } to { transform: scaleY(1.12) rotate(2deg); } }
+.vela.apagada .llama { opacity: 0; transform: scale(.2); animation: none; }
+.vela .humo { position: absolute; left: 50%; bottom: 100%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: rgba(220,220,240,.6); opacity: 0; }
+.vela.apagada .humo { animation: humo 1.6s ease-out forwards; }
+@keyframes humo { 0% { opacity: .7; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-60px) translateX(10px) scale(4); } }
+.pastel-acciones { text-align: center; }
+.pista { color: var(--texto-suave); font-size: .9rem; margin-top: 14px; text-align: center; }
+.deseo { max-width: 600px; margin: 34px auto 0; text-align: center; display: none; }
+.deseo.visible { display: block; animation: aparecer 1s ease; }
+.deseo h3 { font-family: var(--script); font-size: clamp(2.8rem, 9vw, 4.2rem); color: var(--oro); font-weight: 400; }
+.deseo p { font-family: var(--serif); font-size: 1.35rem; font-style: italic; margin-top: 8px; line-height: 1.5; }
+
+/* ============ CARTA ============ */
+.sobre { position: relative; width: 320px; max-width: 86vw; aspect-ratio: 3/2; margin: 0 auto; cursor: pointer; perspective: 900px; transition: transform .4s ease; }
+.sobre:hover { transform: translateY(-6px); }
+.sobre .cuerpo { position: absolute; inset: 0; border-radius: 10px; background: linear-gradient(160deg, #f4e6d4, #e5cfb6); box-shadow: 0 30px 60px rgba(0,0,0,.5); }
+.sobre .solapa { position: absolute; left: 0; right: 0; top: 0; height: 60%; transform-origin: top; transition: transform .9s ease; z-index: 3; }
+.sobre .solapa::before { content: ''; position: absolute; inset: 0; background: linear-gradient(#ead7bf, #d9bf9f); clip-path: polygon(0 0, 100% 0, 50% 100%); border-radius: 10px 10px 0 0; }
+.sobre .sello { position: absolute; left: 50%; top: 52%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e0577f, #9e1f4a); display: flex; align-items: center; justify-content: center; color: #ffd7e4; font-size: 1.4rem; z-index: 4; box-shadow: 0 4px 10px rgba(0,0,0,.35); transition: opacity .4s ease; }
+.sobre .frente { position: absolute; inset: 0; border-radius: 10px; z-index: 2; background: linear-gradient(160deg, #f1e0cb, #e2c9ad); clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%); }
+.sobre .para { position: absolute; bottom: 16%; left: 0; right: 0; text-align: center; z-index: 3; font-family: var(--script); font-size: 2rem; color: #7a4a3a; }
+.sobre.abierto .solapa { transform: rotateX(180deg); z-index: 1; }
+.sobre.abierto .sello { opacity: 0; }
+.sobre-pista { text-align: center; color: var(--texto-suave); margin-top: 26px; font-size: .9rem; letter-spacing: .2em; text-transform: uppercase; }
+.carta { display: none; max-width: 640px; margin: 0 auto; padding: clamp(28px, 6vw, 56px); border-radius: 8px; background: linear-gradient(#fdfaf3, #f6efe0); color: #3b2c3f; box-shadow: 0 30px 80px rgba(0,0,0,.5); position: relative; }
+.carta.visible { display: block; animation: subir 1.2s cubic-bezier(.2,.9,.2,1); }
+@keyframes subir { from { opacity: 0; transform: translateY(80px) scale(.9); } }
+.carta p { font-family: var(--serif); font-size: clamp(1.15rem, 3vw, 1.35rem); line-height: 1.7; margin-bottom: 1em; opacity: 0; transform: translateY(10px); transition: opacity .9s ease, transform .9s ease; }
+.carta p.dentro { opacity: 1; transform: none; }
+.carta .firma { font-family: var(--script); font-size: 2.4rem; color: #9e1f4a; text-align: right; margin-top: 10px; margin-bottom: 0; }
+
+/* ============ FINAL ============ */
+#final { text-align: center; }
+#final .frase { font-family: var(--script); font-size: clamp(3rem, 11vw, 7rem); line-height: 1.1; background: linear-gradient(120deg, var(--oro-2), var(--oro), var(--rosa), var(--lila), var(--oro-2)); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: brillo 8s linear infinite; padding: 0 8px; max-width: 1000px; }
+@keyframes brillo { to { background-position: 300% 0; } }
+#final .acciones { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 40px; color: var(--texto-suave); font-size: .85rem; }
+
+/* Botón música */
+#btn-musica { position: fixed; z-index: 45; right: 16px; bottom: 16px; width: 50px; height: 50px; border-radius: 50%; background: rgba(20,16,50,.75); border: 1px solid var(--borde); backdrop-filter: blur(8px); font-size: 1.3rem; display: none; align-items: center; justify-content: center; }
+#btn-musica.visible { display: flex; }
+#btn-musica.sonando { animation: pulso 1.6s ease-in-out infinite; }
+@keyframes pulso { 50% { box-shadow: 0 0 0 10px rgba(246,217,143,.12); } }
+
+/* ============ MÓVIL ============ */
+@media (max-width: 720px) {
+  section { padding: 80px 16px; }
+  .linea::before, .linea .progreso { left: 14px; }
+  .hito, .hito:nth-child(odd) { width: 100%; margin-left: 0; padding: 0 0 56px 44px; text-align: left; }
+  .hito:nth-child(even) { text-align: left; }
+  .hito::before, .hito:nth-child(odd)::before, .hito:nth-child(even)::before { left: 7px; right: auto; }
+  .hito:nth-child(even) .polaroid { transform: rotate(-2deg); }
+  .astro .nom { font-size: .7rem; }
+  #mapa text { font-size: 26px; }
+  #mapa text.quien { font-size: 18px; }
+  #mapa text#ciudad-tu, #mapa text#ciudad-ella { transform: translateY(8px); }
+  #mapa text.quien { transform: translateY(20px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body class="bloqueado">
+<canvas id="cielo"></canvas>
+
+<!-- ===== INTRO ===== -->
+<div id="intro">
+  <div id="intro-texto"></div>
+  <button id="estrella-inicio" aria-label="Tocar la estrella">
+    <span class="rayo"></span><span class="rayo v"></span><span class="rayo d1"></span><span class="rayo d2"></span>
+    <span class="nucleo"></span>
+  </button>
+  <div id="pista-inicio">toca la estrella</div>
+  <button id="saltar">saltar intro ›</button>
+</div>
+<div id="flash"></div>
+
+<main id="main">
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="pre">Feliz cumpleaños</div>
+    <canvas id="constelacion" aria-label="Constelación con tu nombre"></canvas>
+    <p class="sub">Esta noche el cielo dibujó tu nombre, porque hoy todo el universo celebra que existes.</p>
+    <div class="vuelta" id="vuelta" hidden></div>
+    <div class="bajar">desliza<i></i></div>
+  </section>
+
+  <!-- ===== DISTANCIA ===== -->
+  <section id="distancia">
+    <div class="contenedor">
+      <div class="etiqueta revelar">nuestro universo</div>
+      <h2 class="revelar">Lejos, pero <em>juntas</em></h2>
+      <svg id="mapa" class="revelar" viewBox="0 0 600 220" aria-hidden="true">
+        <defs>
+          <linearGradient id="gradArco" x1="0" x2="1"><stop offset="0" stop-color="#b9a7ff"/><stop offset=".5" stop-color="#f6d98f"/><stop offset="1" stop-color="#ff9ecf"/></linearGradient>
+        </defs>
+        <path id="ruta" class="arco" d="M70 170 Q300 -40 530 170"/>
+        <circle class="punto" cx="70" cy="170" r="7"/>
+        <circle class="punto" cx="530" cy="170" r="7"/>
+        <text x="70" y="200" id="ciudad-tu"></text>
+        <text x="70" y="216" class="quien">yo</text>
+        <text x="530" y="200" id="ciudad-ella"></text>
+        <text x="530" y="216" class="quien" id="quien-ella"></text>
+        <g>
+          <text font-size="22" style="text-anchor:middle" dy="7">💛</text>
+          <animateMotion dur="5s" repeatCount="indefinite" rotate="0"><mpath href="#ruta"/></animateMotion>
+        </g>
+      </svg>
+      <div class="km revelar" id="km-bloque"><b id="km">0</b><span>kilómetros entre nosotras</span></div>
+      <p class="mismo-cielo revelar">...pero esta noche miramos el mismo cielo.</p>
+      <div class="numeros" id="numeros"></div>
+    </div>
+  </section>
+
+  <!-- ===== HISTORIA ===== -->
+  <section id="historia">
+    <div class="contenedor">
+      <div class="etiqueta revelar">capítulo uno</div>
+      <h2 class="revelar">Nuestra <em>historia</em></h2>
+      <p class="bajada revelar">Cada estrella de esta línea es un momento que me hizo quererte un poquito más.</p>
+      <div class="linea" id="linea"><div class="progreso" id="progreso"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== MENSAJES ===== -->
+  <section id="mensajes">
+    <div class="contenedor">
+      <div class="etiqueta revelar">la gente que te quiere</div>
+      <h2 class="revelar">Un cielo lleno de <em>mensajes</em></h2>
+      <p class="bajada revelar">Cada estrella guarda un mensaje de alguien que te quiere. Tócalas todas, hay una sorpresa al final.</p>
+      <div class="cielo-mensajes revelar" id="cielo-mensajes"></div>
+      <p class="contador" id="contador"></p>
+      <div class="secreto" id="secreto"></div>
+    </div>
+  </section>
+
+  <!-- ===== MÚSICA ===== -->
+  <section id="musica">
+    <div class="contenedor">
+      <div class="etiqueta revelar">play ▶</div>
+      <h2 class="revelar">Nuestra <em>banda sonora</em></h2>
+      <p class="bajada revelar">Las canciones que, sin importar dónde estemos, siempre van a ser nuestras.</p>
+      <div class="playlist revelar" id="playlist"></div>
+      <div class="canciones" id="canciones"></div>
+    </div>
+  </section>
+
+  <!-- ===== RAZONES ===== -->
+  <section id="razones">
+    <div class="contenedor">
+      <div class="etiqueta revelar">pide una estrella fugaz</div>
+      <h2 class="revelar">Razones por las que <em>te quiero</em></h2>
+      <div class="cielo-razones revelar">
+        <div class="razon-num" id="razon-num"></div>
+        <div class="razon" id="razon">Cada estrella fugaz trae una razón. ¿Lista?</div>
+        <button class="boton" id="btn-razon">🌠 Lanzar una estrella fugaz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PASTEL ===== -->
+  <section id="pastel">
+    <div class="contenedor">
+      <div class="etiqueta revelar">el momento más importante</div>
+      <h2 class="revelar">Sopla las <em>velas</em></h2>
+      <p class="bajada revelar">Cierra los ojos, piensa en un deseo y sopla fuerte al micrófono... o toca cada vela.</p>
+      <div class="pastel revelar" id="el-pastel">
+        <div class="plato"></div>
+        <div class="piso p1"><div class="glaseado"></div></div>
+        <div class="piso p2"><div class="glaseado"></div></div>
+        <div class="velas" id="velas"></div>
+      </div>
+      <div class="pastel-acciones">
+        <button class="boton" id="btn-soplar">🎤 Soplar con el micrófono</button>
+        <p class="pista" id="pista-pastel"></p>
+      </div>
+      <div class="deseo" id="deseo"><h3>¡Pide un deseo!</h3><p id="texto-deseo"></p></div>
+    </div>
+  </section>
+
+  <!-- ===== CARTA ===== -->
+  <section id="carta">
+    <div class="contenedor">
+      <div class="etiqueta revelar">solo para ti</div>
+      <h2 class="revelar">Una carta <em>para ti</em></h2>
+      <div id="zona-sobre" class="revelar">
+        <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la carta">
+          <div class="cuerpo"></div><div class="frente"></div><div class="solapa"></div>
+          <div class="sello">♥</div><div class="para" id="para"></div>
+        </div>
+        <p class="sobre-pista">toca para abrir</p>
+      </div>
+      <div class="carta" id="la-carta"></div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL ===== -->
+  <section id="final">
+    <div class="frase revelar" id="frase-final"></div>
+    <div class="acciones revelar">
+      <button class="boton" id="btn-deseo">✨ Lluvia de estrellas</button>
+      <button class="boton sec" id="btn-arriba">Volver a mirar el cielo ↑</button>
+    </div>
+  </section>
+  <footer id="pie"></footer>
+</main>
+
+<div id="modal" role="dialog" aria-modal="true">
+  <div class="tarjeta" id="tarjeta"></div>
+</div>
+<canvas id="confeti"></canvas>
+<button id="btn-musica" aria-label="Música">🎵</button>
+<audio id="audio" loop preload="auto"></audio>
+
+<script>
+const D = /*__DATOS__*/null;
+const $ = (s) => document.querySelector(s);
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+const pocoMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const params = new URLSearchParams(location.search);
+const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const parseFecha = (s) => { if (!s) return null; const [a, m, d] = s.split('-').map(Number); return new Date(a, m - 1, d); };
+
+/* ================= CIELO DE FONDO ================= */
+const cielo = { c: $('#cielo'), estrellas: [], fugaces: [], brillo: 0.12, meta: 0.12 };
+const cctx = cielo.c.getContext('2d');
+function ajustarCielo() {
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  cielo.w = innerWidth; cielo.h = innerHeight;
+  cielo.c.width = cielo.w * dpr; cielo.c.height = cielo.h * dpr;
+  cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const n = Math.min(420, Math.floor((cielo.w * cielo.h) / 2600));
+  cielo.estrellas = Array.from({ length: n }, () => ({
+    x: Math.random() * cielo.w, y: Math.random() * cielo.h,
+    r: Math.random() < 0.08 ? Math.random() * 1.2 + 1.1 : Math.random() * 0.9 + 0.25,
+    f: Math.random() * 6.28, v: 0.4 + Math.random() * 1.8, p: 0.03 + Math.random() * 0.25,
+    t: Math.random() < 0.15 ? 'lila' : Math.random() < 0.1 ? 'oro' : 'blanca',
+  }));
+}
+function lanzarFugaz(grande = false) {
+  const desdeIzq = Math.random() < 0.5;
+  cielo.fugaces.push({
+    x: desdeIzq ? Math.random() * cielo.w * 0.5 : cielo.w * (0.5 + Math.random() * 0.5),
+    y: Math.random() * cielo.h * 0.4,
+    vx: (desdeIzq ? 1 : -1) * (grande ? 14 : 9 + Math.random() * 5), vy: grande ? 6 : 3 + Math.random() * 3,
+    vida: 1, largo: grande ? 260 : 120 + Math.random() * 80, grosor: grande ? 2.6 : 1.4,
+  });
+}
+const colores = { blanca: '255,255,255', lila: '205,190,255', oro: '255,230,170' };
+function dibujarCielo(t) {
+  cctx.clearRect(0, 0, cielo.w, cielo.h);
+  cielo.brillo += (cielo.meta - cielo.brillo) * 0.02;
+  const sy = scrollY;
+  for (const s of cielo.estrellas) {
+    let y = (s.y - sy * s.p) % cielo.h; if (y < 0) y += cielo.h;
+    const a = cielo.brillo * (0.45 + 0.55 * Math.sin(t * 0.001 * s.v + s.f));
+    cctx.fillStyle = `rgba(${colores[s.t]},${Math.max(0, a)})`;
+    cctx.beginPath(); cctx.arc(s.x, y, s.r, 0, 6.283); cctx.fill();
+    if (s.r > 1.1 && a > 0.6) { cctx.fillStyle = `rgba(${colores[s.t]},${a * 0.15})`; cctx.beginPath(); cctx.arc(s.x, y, s.r * 4, 0, 6.283); cctx.fill(); }
+  }
+  if (!pocoMovimiento && cielo.brillo > 0.5 && Math.random() < 0.004) lanzarFugaz();
+  cielo.fugaces = cielo.fugaces.filter((f) => f.vida > 0);
+  for (const f of cielo.fugaces) {
+    f.x += f.vx; f.y += f.vy; f.vida -= 0.012;
+    const m = Math.hypot(f.vx, f.vy), ex = f.x - (f.vx / m) * f.largo, ey = f.y - (f.vy / m) * f.largo;
+    const g = cctx.createLinearGradient(f.x, f.y, ex, ey);
+    g.addColorStop(0, `rgba(255,255,255,${f.vida})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+    cctx.strokeStyle = g; cctx.lineWidth = f.grosor; cctx.lineCap = 'round';
+    cctx.beginPath(); cctx.moveTo(f.x, f.y); cctx.lineTo(ex, ey); cctx.stroke();
+  }
+  requestAnimationFrame(dibujarCielo);
+}
+ajustarCielo(); requestAnimationFrame(dibujarCielo);
+
+/* ================= CONFETI ================= */
+const conf = { c: $('#confeti'), p: [], activo: false };
+const fctx = conf.c.getContext('2d');
+function ajustarConfeti() { const dpr = Math.min(devicePixelRatio || 1, 2); conf.c.width = innerWidth * dpr; conf.c.height = innerHeight * dpr; fctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+ajustarConfeti();
+function confeti(cant = 160) {
+  const tonos = ['#f6d98f', '#ffe9b8', '#ff9ecf', '#b9a7ff', '#ffffff', '#8fd3ff'];
+  for (let i = 0; i < cant; i++) conf.p.push({
+    x: innerWidth / 2 + (Math.random() - 0.5) * innerWidth * 0.3, y: innerHeight * 0.55,
+    vx: (Math.random() - 0.5) * 16, vy: -Math.random() * 18 - 6, g: 0.35 + Math.random() * 0.15,
+    r: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.3, s: 5 + Math.random() * 7,
+    col: tonos[(Math.random() * tonos.length) | 0], estrella: Math.random() < 0.35, vida: 1,
+  });
+  if (!conf.activo) { conf.activo = true; requestAnimationFrame(dibujarConfeti); }
+}
+function estrella5(x, y, r) { fctx.beginPath(); for (let i = 0; i < 10; i++) { const a = (i * Math.PI) / 5 - Math.PI / 2, rr = i % 2 ? r * 0.45 : r; fctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } fctx.closePath(); fctx.fill(); }
+function dibujarConfeti() {
+  fctx.clearRect(0, 0, innerWidth, innerHeight);
+  conf.p = conf.p.filter((p) => p.vida > 0 && p.y < innerHeight + 40);
+  for (const p of conf.p) {
+    p.vx *= 0.99; p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += p.vr; if (p.vy > 0) p.vida -= 0.006;
+    fctx.save(); fctx.globalAlpha = Math.max(0, p.vida); fctx.fillStyle = p.col; fctx.translate(p.x, p.y); fctx.rotate(p.r);
+    if (p.estrella) estrella5(0, 0, p.s * 0.8); else fctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2);
+    fctx.restore();
+  }
+  if (conf.p.length) requestAnimationFrame(dibujarConfeti); else { conf.activo = false; fctx.clearRect(0, 0, innerWidth, innerHeight); }
+}
+
+/* ================= MÚSICA DE FONDO ================= */
+const audio = $('#audio'), btnMusica = $('#btn-musica');
+if (D.musica_fondo) { audio.src = D.musica_fondo; btnMusica.classList.add('visible'); }
+function tocarMusica() {
+  if (!D.musica_fondo) return;
+  audio.volume = 0; audio.play().then(() => { btnMusica.classList.add('sonando'); btnMusica.textContent = '🎵';
+    const sube = setInterval(() => { audio.volume = Math.min(0.7, audio.volume + 0.03); if (audio.volume >= 0.7) clearInterval(sube); }, 120);
+  }).catch(() => {});
+}
+btnMusica.onclick = () => {
+  if (audio.paused) tocarMusica();
+  else { audio.pause(); btnMusica.classList.remove('sonando'); btnMusica.textContent = '🔇'; }
+};
+
+/* ================= INTRO ================= */
+async function escribir(contenedor, lineas) {
+  for (const linea of lineas) {
+    const p = document.createElement('p'); p.className = 'cursor'; contenedor.appendChild(p);
+    for (const ch of linea) { p.textContent += ch; await espera(pocoMovimiento ? 0 : ch === ',' || ch === '.' ? 220 : 48); }
+    await espera(900); p.classList.remove('cursor');
+  }
+}
+let empezado = false;
+function empezar() {
+  if (empezado) return; empezado = true;
+  tocarMusica();
+  $('#flash').classList.add('boom');
+  cielo.meta = 1;
+  for (let i = 0; i < 4; i++) setTimeout(() => lanzarFugaz(true), 300 + i * 350);
+  setTimeout(() => {
+    $('#intro').classList.add('fuera'); document.body.classList.remove('bloqueado');
+    $('#main').classList.add('visible'); iniciarConstelacion();
+  }, 450);
+  setTimeout(() => $('#intro').remove(), 2400);
+}
+function mostrarEstrella() { $('#estrella-inicio').classList.add('visible'); }
+function cuentaRegresiva(fecha) {
+  const t = $('#intro-texto');
+  t.innerHTML = `<p>Todavía no es momento, ${esc(D.nombre)}...</p><p>Las estrellas se están alineando para tu día ✨</p>
+    <div class="cuenta"><div><b id="cd-d">0</b><span>días</span></div><div><b id="cd-h">0</b><span>horas</span></div><div><b id="cd-m">0</b><span>min</span></div><div><b id="cd-s">0</b><span>seg</span></div></div>`;
+  $('#estrella-inicio').remove(); $('#pista-inicio').remove(); $('#saltar').remove();
+  cielo.meta = 0.6;
+  const tick = () => {
+    let s = Math.max(0, Math.floor((fecha - new Date()) / 1000));
+    if (s === 0) return location.reload();
+    $('#cd-d').textContent = Math.floor(s / 86400); s %= 86400;
+    $('#cd-h').textContent = Math.floor(s / 3600); s %= 3600;
+    $('#cd-m').textContent = Math.floor(s / 60); $('#cd-s').textContent = s % 60;
+  };
+  tick(); setInterval(tick, 1000);
+}
+(async function intro() {
+  const fecha = parseFecha(D.fecha_cumple);
+  if (fecha && new Date() < fecha && !params.has('ver') && !D._ver) return cuentaRegresiva(fecha);
+  $('#estrella-inicio').onclick = empezar;
+  $('#saltar').onclick = () => { mostrarEstrella(); empezar(); };
+  if (params.has('directo') || D._directo) return empezar();
+  await espera(800);
+  await escribir($('#intro-texto'), D.intro || []);
+  mostrarEstrella();
+})();
+
+/* ================= CONSTELACIÓN DEL NOMBRE ================= */
+const conste = { c: $('#constelacion'), puntos: [], lineas: [], t0: 0 };
+const kctx = conste.c.getContext('2d');
+function armarConstelacion() {
+  const w = conste.c.clientWidth, h = conste.c.clientHeight, dpr = Math.min(devicePixelRatio || 1, 2);
+  conste.c.width = w * dpr; conste.c.height = h * dpr; kctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  conste.w = w; conste.h = h;
+  const nombre = D.nombre || 'Kiara';
+  const off = document.createElement('canvas'); off.width = w; off.height = h;
+  const o = off.getContext('2d');
+  let tam = Math.min(h * 0.92, (w * 0.95) / (nombre.length * 0.52));
+  o.font = `700 ${tam}px 'Cormorant Garamond', Georgia, serif`;
+  const ancho = o.measureText(nombre).width; if (ancho > w * 0.94) { tam *= (w * 0.94) / ancho; o.font = `700 ${tam}px 'Cormorant Garamond', Georgia, serif`; }
+  o.textAlign = 'center'; o.textBaseline = 'middle'; o.fillStyle = '#fff'; o.fillText(nombre, w / 2, h / 2);
+  const datos = o.getImageData(0, 0, w, h).data;
+  const paso = Math.max(3, Math.round(tam / 26)), cand = [];
+  for (let y = 0; y < h; y += paso) for (let x = 0; x < w; x += paso) if (datos[(y * w + x) * 4 + 3] > 140) cand.push({ x, y });
+  for (let i = cand.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [cand[i], cand[j]] = [cand[j], cand[i]]; }
+  const minD = tam / 10, pts = [];
+  for (const c of cand) { if (pts.every((p) => Math.hypot(p.x - c.x, p.y - c.y) >= minD)) pts.push(c); }
+  pts.sort((a, b) => a.x - b.x);
+  pts.forEach((p, i) => { p.r = Math.random() < 0.25 ? 2.4 : 1.4 + Math.random() * 0.6; p.f = Math.random() * 6.28; p.ap = i * 45; });
+  const lineas = [], vistas = new Set(), maxD = minD * 1.75;
+  pts.forEach((p, i) => {
+    const cerca = pts.map((q, j) => ({ j, d: Math.hypot(p.x - q.x, p.y - q.y) })).filter((o) => o.j !== i && o.d < maxD).sort((a, b) => a.d - b.d).slice(0, 2);
+    for (const { j } of cerca) { const k = i < j ? `${i}-${j}` : `${j}-${i}`; if (!vistas.has(k)) { vistas.add(k); lineas.push({ a: p, b: pts[j], ap: Math.max(p.ap, pts[j].ap) + 150 }); } }
+  });
+  conste.puntos = pts; conste.lineas = lineas;
+}
+function dibujarConstelacion(t) {
+  const e = t - conste.t0;
+  kctx.clearRect(0, 0, conste.w, conste.h);
+  kctx.lineWidth = 0.9;
+  for (const l of conste.lineas) {
+    const k = Math.min(1, Math.max(0, (e - l.ap) / 700)); if (!k) continue;
+    kctx.strokeStyle = `rgba(246,217,143,${0.38 * k})`;
+    kctx.beginPath(); kctx.moveTo(l.a.x, l.a.y); kctx.lineTo(l.a.x + (l.b.x - l.a.x) * k, l.a.y + (l.b.y - l.a.y) * k); kctx.stroke();
+  }
+  for (const p of conste.puntos) {
+    const k = Math.min(1, Math.max(0, (e - p.ap) / 500)); if (!k) continue;
+    const brillo = 0.7 + 0.3 * Math.sin(t * 0.002 + p.f);
+    const g = kctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+    g.addColorStop(0, `rgba(255,240,205,${0.55 * k * brillo})`); g.addColorStop(1, 'rgba(255,240,205,0)');
+    kctx.fillStyle = g; kctx.beginPath(); kctx.arc(p.x, p.y, p.r * 6, 0, 6.283); kctx.fill();
+    kctx.fillStyle = `rgba(255,255,255,${k * brillo})`; kctx.beginPath(); kctx.arc(p.x, p.y, p.r * k, 0, 6.283); kctx.fill();
+  }
+  requestAnimationFrame(dibujarConstelacion);
+}
+let constelacionLista = false;
+async function iniciarConstelacion() {
+  try { await document.fonts.load("700 80px 'Cormorant Garamond'"); } catch (e) {}
+  armarConstelacion(); conste.t0 = performance.now();
+  if (!constelacionLista) { constelacionLista = true; requestAnimationFrame(dibujarConstelacion); }
+}
+let tRes; addEventListener('resize', () => { ajustarCielo(); ajustarConfeti(); clearTimeout(tRes); tRes = setTimeout(() => { if (constelacionLista) { armarConstelacion(); conste.t0 = performance.now() - 99999; } }, 250); });
+
+/* ================= HERO + NÚMEROS ================= */
+const hoy = new Date();
+const nac = parseFecha(D.nacimiento);
+if (nac) {
+  let edad = hoy.getFullYear() - nac.getFullYear();
+  if (hoy < new Date(hoy.getFullYear(), nac.getMonth(), nac.getDate())) edad--;
+  const v = $('#vuelta'); v.hidden = false; v.textContent = `☀️ Hoy das tu vuelta número ${Math.max(edad, 1)} alrededor del sol`;
+}
+function distanciaKm(a, b) {
+  const R = 6371, rad = (g) => (g * Math.PI) / 180, dLa = rad(b.lat - a.lat), dLo = rad(b.lon - a.lon);
+  const x = Math.sin(dLa / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLo / 2) ** 2;
+  return Math.round(2 * R * Math.asin(Math.sqrt(x)));
+}
+const U = D.ubicaciones || {};
+let km = 0;
+$('#ciudad-tu').textContent = U.tu?.ciudad || '';
+$('#ciudad-ella').textContent = U.ella?.ciudad || '';
+$('#quien-ella').textContent = D.nombre;
+if (U.tu?.lat != null && U.ella?.lat != null) km = distanciaKm(U.tu, U.ella); else $('#km-bloque').remove();
+const numeros = [];
+const amistad = parseFecha(D.inicio_amistad);
+if (amistad) numeros.push({ n: Math.floor((hoy - amistad) / 86400000), t: 'días siendo mejores amigas' });
+if (nac) numeros.push({ n: Math.floor((hoy - nac) / 86400000), t: 'días haciendo este mundo más bonito' });
+if (nac) numeros.push({ n: Math.round(((hoy - nac) / 31557600000) * 940000000), t: 'km viajados alrededor del sol', corto: true });
+$('#numeros').innerHTML = numeros.map((x) => `<div class="numero revelar"><b data-contar="${x.n}" ${x.corto ? 'data-corto' : ''}>0</b><span>${x.t}</span></div>`).join('');
+function formato(n, corto) {
+  if (corto && n >= 1e9) return (n / 1e9).toLocaleString('es', { maximumFractionDigits: 1 }) + ' mil millones';
+  return n.toLocaleString('es');
+}
+function contar(el, fin, corto) {
+  const t0 = performance.now(), dur = 2200;
+  const paso = (t) => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = formato(Math.round(fin * e), corto); if (k < 1) requestAnimationFrame(paso); };
+  requestAnimationFrame(paso);
+}
+
+/* ================= HISTORIA ================= */
+const linea = $('#linea');
+(D.historia || []).forEach((h) => {
+  const el = document.createElement('div'); el.className = 'hito revelar';
+  el.innerHTML = `<div class="fecha">${esc(h.fecha)}</div><h3>${esc(h.titulo)}</h3><p>${esc(h.texto)}</p>
+    <div class="polaroid">${h.foto ? `<img src="${esc(h.foto)}" alt="${esc(h.titulo)}" loading="lazy">` : '<div class="sin-foto">tu foto aquí</div>'}</div>`;
+  linea.appendChild(el);
+});
+function actualizarLinea() {
+  const r = linea.getBoundingClientRect(), vh = innerHeight;
+  const k = Math.min(1, Math.max(0, (vh * 0.7 - r.top) / r.height));
+  $('#progreso').style.height = k * r.height + 'px';
+}
+addEventListener('scroll', actualizarLinea, { passive: true });
+
+/* ================= MENSAJES ================= */
+const zona = $('#cielo-mensajes'), msgs = D.mensajes || [], abiertas = new Set();
+function posiciones(n) {
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    let mejor = null, mejorD = -1;
+    for (let k = 0; k < 40; k++) {
+      const c = { x: 10 + Math.random() * 80, y: 12 + Math.random() * 74 };
+      const d = pts.length ? Math.min(...pts.map((p) => Math.hypot(p.x - c.x, (p.y - c.y) * 0.8))) : 99;
+      if (d > mejorD) { mejorD = d; mejor = c; }
+    }
+    pts.push(mejor);
+  }
+  return pts;
+}
+posiciones(msgs.length).forEach((p, i) => {
+  const b = document.createElement('button'); b.className = 'astro';
+  b.style.left = p.x + '%'; b.style.top = p.y + '%';
+  b.innerHTML = `<span class="luz" style="animation-delay:${(Math.random() * 3).toFixed(2)}s"></span><span class="nom">${esc(msgs[i].de)}</span>`;
+  b.onclick = () => abrirMensaje(i, b);
+  zona.appendChild(b);
+});
+function actualizarContador() {
+  $('#contador').innerHTML = msgs.length ? `Has abierto <b>${abiertas.size}</b> de <b>${msgs.length}</b> estrellas` : '';
+}
+actualizarContador();
+function videoHTML(url) {
+  if (!url) return '';
+  let m = url.match(/(?:youtu\.be\/|[?&]v=|shorts\/|embed\/)([\w-]{11})/);
+  if (m) return `<iframe src="https://www.youtube-nocookie.com/embed/${m[1]}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  m = url.match(/drive\.google\.com\/file\/d\/([^/?]+)/);
+  if (m) return `<iframe src="https://drive.google.com/file/d/${m[1]}/preview" allow="autoplay" allowfullscreen></iframe>`;
+  return `<video src="${esc(url)}" controls playsinline></video>`;
+}
+function abrirModal(html) {
+  $('#tarjeta').innerHTML = `<button class="cerrar" aria-label="Cerrar">✕</button>${html}`;
+  $('#tarjeta .cerrar').onclick = cerrarModal;
+  $('#modal').classList.add('abierto');
+}
+function cerrarModal() { $('#modal').classList.remove('abierto'); setTimeout(() => ($('#tarjeta').innerHTML = ''), 400); }
+$('#modal').onclick = (e) => { if (e.target.id === 'modal') cerrarModal(); };
+addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarModal(); });
+function abrirMensaje(i, boton) {
+  const m = msgs[i];
+  if (!audio.paused && m.video) { audio.pause(); btnMusica.classList.remove('sonando'); btnMusica.textContent = '🔇'; }
+  abrirModal(`<div class="de">${esc(m.de)}</div>${m.desde ? `<div class="desde">desde ${esc(m.desde)}</div>` : '<div class="desde"></div>'}
+    <div class="msg">${esc(m.texto)}</div>${m.foto ? `<img src="${esc(m.foto)}" alt="">` : ''}${videoHTML(m.video)}`);
+  boton.classList.add('abierta');
+  const nueva = !abiertas.has(i); abiertas.add(i); actualizarContador();
+  if (nueva && abiertas.size === msgs.length) {
+    setTimeout(() => { confeti(200); const s = $('#secreto'); s.textContent = D.mensaje_secreto || ''; if (D.mensaje_secreto) s.classList.add('visible'); }, 600);
+  }
+}
+
+/* ================= MÚSICA (SPOTIFY) ================= */
+function spotifyEmbed(url, alto) {
+  const m = (url || '').match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|playlist|album|episode)\/([A-Za-z0-9]+)/);
+  if (!m) return '';
+  return `<iframe class="spotify" src="https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0" height="${alto}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+}
+const pl = spotifyEmbed(D.playlist, 380);
+if (pl) $('#playlist').innerHTML = pl; else $('#playlist').remove();
+$('#canciones').innerHTML = (D.canciones || []).map((c) => `
+  <div class="cancion revelar"><div class="cab"><div class="vinilo"></div><h3>${esc(c.titulo)}</h3></div>
+  ${c.porque ? `<p>“${esc(c.porque)}”</p>` : ''}
+  ${spotifyEmbed(c.spotify, 152) || '<div class="spotify-vacio">🎧 Aquí va el link de Spotify de esta canción</div>'}</div>`).join('');
+
+/* ================= RAZONES ================= */
+const razones = [...(D.razones || [])].sort(() => Math.random() - 0.5);
+let iRazon = 0;
+function fugazDOM() {
+  const f = document.createElement('div'); f.className = 'fugaz'; document.body.appendChild(f);
+  const x0 = innerWidth * (0.1 + Math.random() * 0.2), y0 = innerHeight * (0.1 + Math.random() * 0.15), dx = innerWidth * 0.75, dy = innerHeight * 0.4;
+  const ang = (Math.atan2(dy, dx) * 180) / Math.PI;
+  f.animate([{ transform: `translate(${x0}px,${y0}px) rotate(${ang}deg) scaleX(.2)`, opacity: 0 }, { opacity: 1, offset: 0.15 },
+    { transform: `translate(${x0 + dx}px,${y0 + dy}px) rotate(${ang}deg) scaleX(1)`, opacity: 0 }], { duration: 1100, easing: 'cubic-bezier(.3,.1,.3,1)' }).onfinish = () => f.remove();
+}
+$('#btn-razon').onclick = () => {
+  const el = $('#razon'), num = $('#razon-num');
+  fugazDOM(); el.classList.add('oculta');
+  setTimeout(() => {
+    if (iRazon < razones.length) { num.textContent = `razón ${iRazon + 1} de ${razones.length}`; el.textContent = razones[iRazon++]; }
+    else { num.textContent = '∞'; el.textContent = '...y millones de razones más que no caben en todo el cielo.'; $('#btn-razon').textContent = '🌠 Volver a empezar'; iRazon = 0; razones.sort(() => Math.random() - 0.5); confeti(90); }
+    el.classList.remove('oculta');
+  }, 700);
+};
+
+/* ================= PASTEL ================= */
+const nVelas = Math.max(1, Math.min(10, D.velas || 5));
+$('#velas').innerHTML = Array.from({ length: nVelas }, () => '<div class="vela"><span class="humo"></span><span class="llama"></span></div>').join('');
+const velas = [...document.querySelectorAll('.vela')];
+$('#texto-deseo').textContent = D.deseo || '';
+let micStream = null, pastelListo = false;
+function apagar(v) {
+  if (v.classList.contains('apagada')) return;
+  v.classList.add('apagada');
+  if (velas.every((x) => x.classList.contains('apagada')) && !pastelListo) {
+    pastelListo = true;
+    if (micStream) micStream.getTracks().forEach((t) => t.stop());
+    $('#btn-soplar').textContent = '🕯️ Encender de nuevo';
+    setTimeout(() => { confeti(240); $('#deseo').classList.add('visible'); for (let i = 0; i < 5; i++) setTimeout(() => lanzarFugaz(true), i * 300); }, 500);
+  }
+}
+velas.forEach((v) => (v.onclick = () => apagar(v)));
+$('#btn-soplar').onclick = async () => {
+  if (pastelListo) { velas.forEach((v) => v.classList.remove('apagada')); pastelListo = false; $('#deseo').classList.remove('visible'); $('#btn-soplar').textContent = '🎤 Soplar con el micrófono'; return; }
+  const pista = $('#pista-pastel');
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    pista.textContent = '¡Ahora sopla fuerte! 🌬️';
+    const ac = new (window.AudioContext || window.webkitAudioContext)(), an = ac.createAnalyser(); an.fftSize = 512;
+    ac.createMediaStreamSource(micStream).connect(an);
+    const buf = new Uint8Array(an.fftSize); let fuerte = 0;
+    const escuchar = () => {
+      if (pastelListo) { ac.close(); pista.textContent = ''; return; }
+      an.getByteTimeDomainData(buf);
+      let s = 0; for (const b of buf) s += ((b - 128) / 128) ** 2;
+      if (Math.sqrt(s / buf.length) > 0.12) { if (++fuerte % 5 === 0) { const vivas = velas.filter((v) => !v.classList.contains('apagada')); if (vivas.length) apagar(vivas[(Math.random() * vivas.length) | 0]); } }
+      requestAnimationFrame(escuchar);
+    };
+    escuchar();
+  } catch (e) { pista.textContent = 'No pude usar el micrófono, pero puedes tocar cada vela para apagarla 🕯️'; }
+};
+
+/* ================= CARTA ================= */
+$('#para').textContent = `Para ${D.nombre}`;
+function abrirCarta() {
+  const s = $('#sobre'); if (s.classList.contains('abierto')) return;
+  s.classList.add('abierto');
+  setTimeout(() => {
+    $('#zona-sobre').style.display = 'none';
+    const c = $('#la-carta');
+    c.innerHTML = (D.carta || '').split(/\n\s*\n/).map((p) => `<p>${esc(p.trim()).replace(/\n/g, '<br>')}</p>`).join('') + `<p class="firma">${esc(D.tu_nombre)}</p>`;
+    c.classList.add('visible');
+    [...c.querySelectorAll('p')].forEach((p, i) => setTimeout(() => p.classList.add('dentro'), 500 + i * 900));
+  }, 1000);
+}
+$('#sobre').onclick = abrirCarta;
+$('#sobre').onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') abrirCarta(); };
+
+/* ================= FINAL ================= */
+$('#frase-final').textContent = D.final || '';
+$('#pie').textContent = `Hecho con todo mi amor para ${D.nombre} · ${D.tu_nombre} ✨`;
+$('#btn-deseo').onclick = () => { confeti(260); for (let i = 0; i < 12; i++) setTimeout(() => lanzarFugaz(Math.random() < 0.5), i * 160); };
+$('#btn-arriba').onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+
+/* ================= APARECER AL HACER SCROLL ================= */
+const obs = new IntersectionObserver((ents) => ents.forEach((e) => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('dentro');
+  if (e.target.id === 'km-bloque') contar($('#km'), km);
+  e.target.querySelectorAll?.('[data-contar]').forEach((b) => contar(b, +b.dataset.contar, b.hasAttribute('data-corto')));
+  obs.unobserve(e.target);
+}), { threshold: 0.18 });
+document.querySelectorAll('.revelar').forEach((el) => obs.observe(el));
+</script>
+</body>
+</html>
