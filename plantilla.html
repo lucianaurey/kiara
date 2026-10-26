@@ -685,12 +685,15 @@ async function iniciarConstelacion() {
 const hoy = new Date();
 const nac = parseFecha(D.nacimiento);
 const cumple = parseFecha(D.fecha_cumple);
-const referencia = cumple && hoy < cumple ? cumple : hoy;
+// Los números se calculan para el día del cumple (aunque la página se abra unos días antes)
+const cumpleEsteAno = nac ? new Date(hoy.getFullYear(), nac.getMonth(), nac.getDate()) : null;
+const proximoCumple = cumple || cumpleEsteAno;
+const referencia = proximoCumple && hoy < proximoCumple ? proximoCumple : hoy;
 let vueltas = 0;
 if (nac) { vueltas = referencia.getFullYear() - nac.getFullYear(); if (referencia < new Date(referencia.getFullYear(), nac.getMonth(), nac.getDate())) vueltas--; }
 const volumen = romano(vueltas || 1);
 $('#lamina').textContent = `LÁMINA Nº ${vueltas || ''} · ${fechaAtlas(cumple || hoy)}`;
-$('#mano-hero').textContent = `feliz cumple ${D.edad_en_letras || vueltas || ''}, mi vida`.replace('  ', ' ');
+$('#mano-hero').textContent = D.nota_portada || `feliz cumple ${D.edad_en_letras || vueltas || ''}, mi vida`.replace('  ', ' ');
 function distanciaKm(a, b) {
   const R = 6371, rad = (g) => (g * Math.PI) / 180, dLa = rad(b.lat - a.lat), dLo = rad(b.lon - a.lon);
   const x = Math.sin(dLa / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLo / 2) ** 2;
