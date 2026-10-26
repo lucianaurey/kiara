@@ -6,6 +6,7 @@ Todo el contenido se edita en  contenido.py
 
 import base64
 import copy
+import importlib
 import io
 import json
 import mimetypes
@@ -15,7 +16,10 @@ import streamlit as st
 import streamlit.components.v1 as components
 from PIL import Image, ImageOps
 
-from contenido import DATOS
+import contenido
+
+# Vuelve a leer contenido.py en cada visita, para que tus cambios se vean al recargar
+DATOS = importlib.reload(contenido).DATOS
 
 RAIZ = Path(__file__).parent
 STATIC = RAIZ / "static"
