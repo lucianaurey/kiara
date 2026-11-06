@@ -80,7 +80,8 @@ def archivo(ruta: str) -> str:
     tipo = mimetypes.guess_type(real.name)[0] or ""
     if real.stat().st_size < 8 * 1024 * 1024 and tipo.startswith("audio"):
         return f"data:{tipo};base64," + base64.b64encode(real.read_bytes()).decode()
-    return f"/app/static/{ruta}"
+    # Sin "/" al inicio: en Streamlit Cloud la app vive bajo /~/+/ y una ruta absoluta se sale de ahí
+    return f"app/static/{ruta}"
 
 
 def preparar_datos() -> dict:
