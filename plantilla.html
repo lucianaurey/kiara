@@ -6,9 +6,9 @@
 <title>Un cielo para ti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=IBM+Plex+Mono:wght@400;500&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Lora:ital,wght@0,400..700;1,400..700&family=Special+Elite&family=Pinyon+Script&family=Reenie+Beanie&display=swap" rel="stylesheet">
 <style>
-/* Atlas antiguo del cielo: títulos Bodoni, lectura Newsreader, datos en máquina, notas a mano */
+/* Scrapbook del cielo: títulos Fraunces, palabras especiales en caligrafía, datos a máquina, notas en plumón */
 :root {
   --noche: #0B1028;
   --luz: #F3EEDF;
@@ -22,11 +22,23 @@
   --tinta-laton: #7A5718;
   --tinta-rosa: #A8455E;
   --linea: rgba(169, 184, 216, 0.25);
-  --titulo: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
-  --lectura: 'Newsreader', Georgia, serif;
-  --maquina: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
-  --mano: 'Nanum Pen Script', 'Bradley Hand', cursive;
+  --lavanda: #C9B8F0;
+  --menta: #A8E0C8;
+  --acento: var(--laton);
+  --titulo: 'Fraunces', Georgia, serif;
+  --lectura: 'Lora', Georgia, serif;
+  --maquina: 'Special Elite', 'Courier New', monospace;
+  --mano: 'Reenie Beanie', 'Bradley Hand', cursive;
+  --firma: 'Pinyon Script', 'Snell Roundhand', cursive;
 }
+/* Cada sección con su color, como hojas distintas de un álbum */
+#distancia { --acento: var(--laton); }
+#historia { --acento: var(--rosa); }
+#mensajes { --acento: var(--lavanda); }
+#musica { --acento: var(--menta); }
+#razones { --acento: var(--laton); }
+#pastel { --acento: var(--rosa); }
+#carta { --acento: var(--lavanda); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -103,9 +115,24 @@ main { position: relative; z-index: 1; opacity: 0; transition: opacity 2s ease; 
 main.visible { opacity: 1; }
 section { min-height: 100vh; padding: 104px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
 .contenedor { width: 100%; max-width: 1080px; margin: 0 auto; }
-.etiqueta { font-family: var(--maquina); font-size: .74rem; letter-spacing: .26em; text-transform: uppercase; color: var(--laton); text-align: center; margin-bottom: 18px; }
-h2 { font-family: var(--titulo); font-weight: 400; font-size: clamp(2.4rem, 7vw, 4.6rem); text-align: center; line-height: 1; letter-spacing: -0.02em; margin-bottom: 20px; }
-h2 em { font-style: italic; font-weight: 500; color: var(--laton); }
+/* La etiqueta es un pedacito de cinta washi pegado chueco */
+.etiqueta {
+  display: table; margin: 0 auto 22px; padding: 7px 18px 5px;
+  font-family: var(--maquina); font-size: .82rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--noche); background: var(--acento); opacity: .92; transform: rotate(-2.5deg);
+  clip-path: polygon(0 8%, 4% 0, 9% 10%, 15% 2%, 22% 9%, 30% 0, 38% 8%, 46% 1%, 54% 9%, 62% 0, 70% 8%, 78% 1%, 86% 9%, 93% 0, 100% 7%, 98% 50%, 100% 92%, 95% 100%, 88% 91%, 80% 100%, 72% 92%, 64% 100%, 56% 91%, 48% 100%, 40% 92%, 32% 100%, 24% 91%, 16% 100%, 8% 92%, 2% 100%, 0 92%, 2% 50%);
+}
+section:nth-of-type(odd) .etiqueta { transform: rotate(2deg); }
+h2 {
+  font-family: var(--titulo); font-weight: 600; font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-size: clamp(2.4rem, 7vw, 4.6rem); text-align: center; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 20px;
+}
+h2 em {
+  display: inline-block; font-family: var(--firma); font-style: normal; font-weight: 400;
+  font-size: 1.3em; line-height: .8; letter-spacing: 0; color: var(--acento);
+  transform: rotate(-4deg) translateY(.06em); padding: 0 .12em;
+  background: linear-gradient(transparent 72%, color-mix(in srgb, var(--acento) 28%, transparent) 72%, color-mix(in srgb, var(--acento) 28%, transparent) 92%, transparent 92%);
+}
 .bajada { text-align: center; color: var(--luz-suave); font-weight: 300; font-size: clamp(1.08rem, 2.6vw, 1.3rem); max-width: 560px; margin: 0 auto 52px; line-height: 1.55; }
 .revelar { opacity: 0; transform: translateY(36px); transition: opacity 1.1s ease, transform 1.1s cubic-bezier(.2,.8,.2,1); }
 .revelar.dentro { opacity: 1; transform: none; }
@@ -133,11 +160,21 @@ h2 em { font-style: italic; font-weight: 500; color: var(--laton); }
 .km b { font-family: var(--titulo); font-weight: 400; font-size: clamp(4rem, 15vw, 8rem); color: var(--luz); line-height: .95; letter-spacing: -0.03em; font-variant-numeric: lining-nums; }
 .km span { display: block; font-family: var(--maquina); color: var(--gris-cielo); letter-spacing: .22em; font-size: .72rem; margin-top: 10px; }
 .mismo-cielo { text-align: center; font-style: italic; font-weight: 300; font-size: clamp(1.4rem, 4vw, 2rem); margin-top: 26px; color: var(--luz-suave); }
-.numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 64px; border-top: 1px solid var(--linea); }
-.numero { padding: 24px 16px 8px; display: flex; flex-direction: column; gap: 6px; }
-.numero .k { font-family: var(--maquina); font-size: .7rem; letter-spacing: .18em; color: var(--gris-cielo); }
-.numero b { font-family: var(--titulo); font-weight: 500; font-size: 2.4rem; color: var(--luz); line-height: 1.05; font-variant-numeric: lining-nums; }
-.numero span { color: var(--luz-suave); font-style: italic; font-size: 1rem; }
+/* Los datos son notitas pegadas, cada una un poco chueca y de otro color */
+.numeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 22px; margin-top: 64px; }
+.numero {
+  --nota: var(--laton);
+  position: relative; padding: 26px 20px 18px; display: flex; flex-direction: column; gap: 8px;
+  background: color-mix(in srgb, var(--nota) 9%, rgba(11,16,40,.55)); border: 1px solid color-mix(in srgb, var(--nota) 35%, transparent);
+  border-radius: 4px 18px 6px 14px; transform: rotate(-1.5deg); box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+.numero::before { content: ''; position: absolute; top: -9px; left: 50%; width: 64px; height: 18px; margin-left: -32px; background: color-mix(in srgb, var(--nota) 70%, transparent); transform: rotate(-3deg); }
+.numero:nth-child(2) { --nota: var(--rosa); transform: rotate(1.2deg); }
+.numero:nth-child(3) { --nota: var(--menta); transform: rotate(-.6deg); }
+.numero:nth-child(4) { --nota: var(--lavanda); transform: rotate(1.8deg); }
+.numero .k { font-family: var(--maquina); font-size: .8rem; letter-spacing: .1em; color: var(--nota); }
+.numero b { font-family: var(--titulo); font-weight: 600; font-variation-settings: 'SOFT' 100, 'WONK' 1; font-size: 2.2rem; color: var(--luz); line-height: 1.05; font-variant-numeric: lining-nums; }
+.numero span { font-family: var(--mano); color: var(--luz-suave); font-size: 1.6rem; line-height: 1; }
 
 /* ============ LIBRO ============ */
 .libro-escena { display: flex; justify-content: center; perspective: 2600px; margin-top: 8px; }
@@ -166,6 +203,25 @@ h2 em { font-style: italic; font-weight: 500; color: var(--laton); }
 .polaroid::before { content: ''; position: absolute; left: 50%; top: -2.6cqw; width: 20cqw; height: 5.4cqw; margin-left: -10cqw; background: rgba(226,184,102,.55); transform: rotate(-3deg); }
 .polaroid img, .polaroid .sin-foto { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .sin-foto { background: #D9D3E6; display: flex !important; align-items: center; justify-content: center; font-family: var(--maquina); font-size: max(10px, 2.2cqw); letter-spacing: .12em; color: var(--tinta-suave); text-align: center; padding: 8px; }
+.collage { display: flex; flex-wrap: wrap; justify-content: center; gap: 4cqw 3cqw; width: 80cqw; max-width: 100%; }
+.collage .polaroid.mini { width: calc((100% - 3cqw) / 2); }
+.polaroid.mini { padding: 1.8cqw 1.8cqw 5cqw; }
+/* Un par de fotos debajo del texto del capítulo */
+.pg-media { display: flex; gap: 5cqw; padding: 2cqw 0 0 1cqw; }
+.pg-media .polaroid.mini { width: 30cqw; }
+.polaroid.portada { width: 64cqw; }
+.polaroid.portada img { aspect-ratio: 3 / 4; }
+.polaroid.mini::before { width: 12cqw; height: 3.6cqw; margin-left: -6cqw; top: -1.8cqw; }
+.polaroid.mini img { aspect-ratio: 1; }
+/* Con más de 4 fotos: tres columnas, y la última fila queda centrada */
+.collage.muchas { display: flex; flex-wrap: wrap; justify-content: center; gap: 3cqw 2.4cqw; width: 84cqw; }
+.collage.muchas .polaroid.mini { width: calc((100% - 4.8cqw) / 3); padding: 1.4cqw 1.4cqw 3.6cqw; }
+.collage.muchas .polaroid.mini::before { width: 9cqw; height: 2.8cqw; margin-left: -4.5cqw; top: -1.4cqw; }
+.vid { display: block; }
+.vid video { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #2a2440; pointer-events: none; }
+.vid .play { position: absolute; left: 50%; top: 42%; width: 6.4cqw; height: 6.4cqw; margin: -3.2cqw 0 0 -3.2cqw; border-radius: 50%; background: rgba(168,69,94,.88); color: #fff; font-size: 2.8cqw; display: flex; align-items: center; justify-content: center; padding-left: .4cqw; }
+.vid:hover .play { background: var(--tinta-rosa); transform: scale(1.1); }
+.tarjeta video { max-height: 78vh; object-fit: contain; background: #000; }
 .pg-pie { font-family: var(--mano); font-size: max(24px, 6.6cqw); color: var(--tinta-rosa); }
 .libro-controles { display: flex; justify-content: center; align-items: center; gap: 22px; margin-top: 44px; }
 .flecha { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(169,184,216,.45); display: flex; align-items: center; justify-content: center; color: var(--luz); transition: border-color .3s, opacity .3s; }
@@ -199,7 +255,7 @@ h2 em { font-style: italic; font-weight: 500; color: var(--laton); }
 #modal.abierto .tarjeta { transform: rotate(-.5deg); }
 .tarjeta .cerrar { position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border-radius: 50%; color: var(--tinta); display: flex; align-items: center; justify-content: center; }
 .tarjeta .desde { font-family: var(--maquina); font-size: .7rem; letter-spacing: .18em; color: var(--tinta-laton); text-transform: uppercase; }
-.tarjeta .de { font-family: var(--titulo); font-style: italic; font-weight: 500; font-size: 2.6rem; line-height: 1; margin: 10px 0 18px; }
+.tarjeta .de { font-family: var(--firma); font-weight: 400; font-size: 3.2rem; line-height: 1; margin: 10px 0 18px; }
 .tarjeta .msg { font-size: 1.25rem; line-height: 1.6; color: var(--tinta-suave); white-space: pre-line; }
 .tarjeta img, .tarjeta video { width: 100%; border-radius: 2px; margin-top: 20px; display: block; }
 .tarjeta iframe { width: 100%; aspect-ratio: 16/9; height: auto; border: 0; margin-top: 20px; display: block; }
@@ -216,6 +272,8 @@ h2 em { font-style: italic; font-weight: 500; color: var(--laton); }
 .cancion h3 { font-family: var(--titulo); font-style: italic; font-size: 1.7rem; font-weight: 500; line-height: 1.05; }
 .cancion p { font-family: var(--mano); font-size: 1.7rem; color: var(--rosa); line-height: 1.1; }
 .spotify { width: 100%; border: 0; border-radius: 12px; }
+.abrir-spotify { align-self: flex-start; font-family: var(--maquina); font-size: .68rem; letter-spacing: .16em; color: var(--luz); text-decoration: none; border-bottom: 1px solid var(--linea); padding-bottom: 2px; }
+.abrir-spotify:hover { color: var(--rosa); }
 .spotify-vacio { padding: 16px; border: 1px dashed var(--linea); font-family: var(--maquina); font-size: .7rem; letter-spacing: .1em; color: var(--gris-cielo); text-align: center; }
 
 /* ============ RAZONES ============ */
@@ -272,7 +330,7 @@ h2 em { font-style: italic; font-weight: 500; color: var(--laton); }
 .carta p { font-size: clamp(1.12rem, 3vw, 1.3rem); line-height: 1.7; color: var(--tinta-suave); margin-bottom: 1em; opacity: 0; transform: translateY(10px); transition: opacity .9s ease, transform .9s ease; }
 .carta p:first-child { font-family: var(--titulo); font-style: italic; font-size: clamp(1.6rem, 4vw, 2rem); color: var(--tinta); }
 .carta p.dentro { opacity: 1; transform: none; }
-.carta .firma { font-family: var(--mano); font-size: 2.6rem; color: var(--tinta-rosa); text-align: right; margin: 10px 0 0; }
+.carta .firma { font-family: var(--firma); font-size: 3.2rem; color: var(--tinta-rosa); text-align: right; margin: 10px 0 0; }
 
 /* ============ FINAL ============ */
 #final { text-align: center; }
@@ -284,6 +342,7 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
 
 #btn-musica { position: fixed; z-index: 45; right: 16px; bottom: 16px; width: 50px; height: 50px; border-radius: 50%; background: rgba(11,16,40,.8); border: 1px solid var(--linea); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; color: var(--luz); }
 #btn-musica.visible { display: flex; }
+#spotify-fondo { position: fixed; left: 0; bottom: 0; width: 300px; height: 80px; opacity: 0; pointer-events: none; z-index: -1; overflow: hidden; }
 #btn-musica.sonando { animation: pulso 1.6s ease-in-out infinite; }
 #btn-musica .off { display: none; }
 #btn-musica.mudo .on { display: none; }
@@ -329,17 +388,17 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
 <main id="main">
   <section id="hero">
     <div class="barra-atlas"><span>ATLAS PERSONAL DEL CIELO</span><span id="lamina"></span></div>
-    <div class="eyebrow">OBJETO CELESTE · CLASE: MEJOR AMIGA</div>
+    <div class="eyebrow">OBJETO CELESTE</div>
     <canvas id="constelacion" aria-label="Constelación con su nombre"></canvas>
-    <p class="sub">La estrella que encontré en segundo de primaria y que, desde entonces, no ha dejado de brillar.</p>
+    <p class="sub">Twenty trips around the sun, and every one made the world better.</p>
     <div class="mano" id="mano-hero"></div>
     <div class="bajar">DESLIZA<i></i></div>
   </section>
 
   <section id="distancia">
     <div class="contenedor">
-      <div class="etiqueta revelar">Lámina I · la distancia</div>
-      <h2 class="revelar">Lejos, pero <em>juntas</em></h2>
+      <div class="etiqueta revelar">la distancia</div>
+      <h2 class="revelar">Different cities, <em>same stars</em></h2>
       <svg id="mapa" class="revelar" viewBox="0 0 600 230" aria-hidden="true">
         <ellipse class="orbita" cx="300" cy="150" rx="280" ry="70"/>
         <path id="ruta" class="arco" d="M70 170 Q300 -40 530 170"/>
@@ -355,14 +414,14 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
         </g>
       </svg>
       <div class="km revelar" id="km-bloque"><b id="km">0</b><span>KILÓMETROS ENTRE NOSOTRAS</span></div>
-      <p class="mismo-cielo revelar">…pero esta noche miramos el mismo cielo.</p>
+      <p class="mismo-cielo revelar">…pero siempre miramos el mismo cielo.</p>
       <div class="numeros" id="numeros"></div>
     </div>
   </section>
 
   <section id="historia">
     <div class="contenedor">
-      <div class="etiqueta revelar">Lámina II · nuestra historia</div>
+      <div class="etiqueta revelar">nuestra historia</div>
       <h2 class="revelar">Un libro <em>de las dos</em></h2>
       <p class="bajada revelar">Pasa las páginas. Cada capítulo es un pedacito de nosotras.</p>
       <div class="libro-escena revelar"><div class="libro" id="libro"></div></div>
@@ -377,7 +436,7 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
 
   <section id="mensajes">
     <div class="contenedor">
-      <div class="etiqueta revelar">Lámina III · la gente que te quiere</div>
+      <div class="etiqueta revelar">de la gente que más te quiere</div>
       <h2 class="revelar">Un cielo lleno de <em>mensajes</em></h2>
       <p class="bajada revelar">Cada estrella guarda el mensaje de alguien que te quiere. Ábrelas todas: al final hay una sorpresa.</p>
       <div class="cielo-mensajes revelar" id="cielo-mensajes"></div>
@@ -388,7 +447,7 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
 
   <section id="musica">
     <div class="contenedor">
-      <div class="etiqueta revelar">Lámina IV · lo que suena</div>
+      <div class="etiqueta revelar">lo que suena</div>
       <h2 class="revelar">Nuestra <em>banda sonora</em></h2>
       <p class="bajada revelar">Las canciones que, estemos donde estemos, siempre van a ser nuestras.</p>
       <div class="playlist revelar" id="playlist"></div>
@@ -398,8 +457,8 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
 
   <section id="razones">
     <div class="contenedor">
-      <div class="etiqueta revelar">Lámina V · estrellas fugaces</div>
-      <h2 class="revelar">Razones por las que <em>te quiero</em></h2>
+      <div class="etiqueta revelar">estrellas fugaces</div>
+      <h2 class="revelar">Razones por las que <em>te amo</em></h2>
       <div class="cielo-razones revelar">
         <div class="razon-num" id="razon-num"></div>
         <div class="razon" id="razon">Cada estrella fugaz trae una razón. ¿Lista?</div>
@@ -410,7 +469,7 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
 
   <section id="pastel">
     <div class="contenedor">
-      <div class="etiqueta revelar">Lámina VI · el deseo</div>
+      <div class="etiqueta revelar">el deseo</div>
       <h2 class="revelar">Sopla las <em>velas</em></h2>
       <p class="bajada revelar">Cierra los ojos, piensa un deseo y sopla fuerte al micrófono… o toca cada vela.</p>
       <div class="pastel revelar">
@@ -429,8 +488,8 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
 
   <section id="carta">
     <div class="contenedor">
-      <div class="etiqueta revelar">Lámina VII · solo para ti</div>
-      <h2 class="revelar">Una carta <em>para ti</em></h2>
+      <div class="etiqueta revelar">solo para ti</div>
+      <h2 class="revelar">Una carta <em>para ti con todo el cariño del mundo</em></h2>
       <div id="zona-sobre" class="revelar">
         <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir la carta">
           <div class="cuerpo"></div><div class="frente"></div><div class="solapa"></div>
@@ -462,6 +521,7 @@ footer { position: relative; z-index: 1; text-align: center; padding: 30px 16px 
   <svg class="off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M23 9l-6 6"/><path d="M17 9l6 6"/></svg>
 </button>
 <audio id="audio" loop preload="auto"></audio>
+<div id="spotify-fondo" aria-hidden="true"><div id="spotify-fondo-iframe"></div></div>
 
 <script>
 const D = /*__DATOS__*/null;
@@ -558,15 +618,39 @@ function dibujarConfeti() {
 
 /* ================= MÚSICA DE FONDO ================= */
 const audio = $('#audio'), btnMusica = $('#btn-musica');
+const idSpotify = (url) => (url || '').match(/open\.spotify\.com\/(?:intl-[a-z-]+\/)?(track|playlist|album|episode)\/([A-Za-z0-9]+)/);
+const fondoSpotify = !D.musica_fondo && idSpotify(D.spotify_fondo);
+let spotify = null, spotifySonando = false, spotifyQuierePlay = false, spotifyArrancado = false;
+const musicaSonando = () => (fondoSpotify ? spotifySonando : !audio.paused);
+function marcarBoton(sonando) { btnMusica.classList.toggle('sonando', sonando); btnMusica.classList.toggle('mudo', !sonando); }
 if (D.musica_fondo) { audio.src = D.musica_fondo; btnMusica.classList.add('visible'); }
+if (fondoSpotify) {
+  btnMusica.classList.add('visible');
+  window.onSpotifyIframeApiReady = (IFrameAPI) => {
+    IFrameAPI.createController($('#spotify-fondo-iframe'),
+      { uri: `spotify:${fondoSpotify[1]}:${fondoSpotify[2]}`, width: 300, height: 80 },
+      (ctrl) => {
+        spotify = ctrl;
+        ctrl.addListener('playback_update', (e) => { spotifySonando = !e.data.isPaused; marcarBoton(spotifySonando); });
+        ctrl.addListener('ready', () => { if (spotifyQuierePlay && !spotifyArrancado) { ctrl.play(); spotifyArrancado = true; } });
+      });
+  };
+  const s = document.createElement('script'); s.src = 'https://open.spotify.com/embed/iframe-api/v1'; s.async = true; document.body.appendChild(s);
+}
 function tocarMusica() {
+  if (fondoSpotify) { spotifyQuierePlay = true; if (spotify) { spotifyArrancado ? spotify.resume() : spotify.play(); spotifyArrancado = true; } return; }
   if (!D.musica_fondo) return;
-  audio.volume = 0; audio.play().then(() => { btnMusica.classList.add('sonando'); btnMusica.classList.remove('mudo');
+  audio.volume = 0; audio.play().then(() => { marcarBoton(true);
     const sube = setInterval(() => { audio.volume = Math.min(0.7, audio.volume + 0.03); if (audio.volume >= 0.7) clearInterval(sube); }, 120);
   }).catch(() => {});
 }
-function pausarMusica() { audio.pause(); btnMusica.classList.remove('sonando'); btnMusica.classList.add('mudo'); }
-btnMusica.onclick = () => (audio.paused ? tocarMusica() : pausarMusica());
+function pausarMusica() {
+  if (fondoSpotify) { spotifyQuierePlay = false; if (spotify) spotify.pause(); marcarBoton(false); return; }
+  audio.pause(); marcarBoton(false);
+}
+btnMusica.onclick = () => (musicaSonando() ? pausarMusica() : tocarMusica());
+// Si toca play en una canción de la banda sonora, se pausa la de fondo
+addEventListener('blur', () => setTimeout(() => { const f = document.activeElement; if (f && f.classList && f.classList.contains('spotify') && musicaSonando()) pausarMusica(); }, 0));
 
 /* ================= INTRO ================= */
 async function escribir(contenedor, lineas) {
@@ -612,6 +696,7 @@ function cuentaRegresiva(fecha) {
   if (params.has('directo') || D._directo) return empezar();
   await espera(800);
   await escribir($('#intro-texto'), D.intro || []);
+  if (!$('#estrella-inicio')) return; // ya saltó la intro mientras se escribía
   $('#estrella-inicio').classList.add('visible');
 })();
 
@@ -693,7 +778,7 @@ let vueltas = 0;
 if (nac) { vueltas = referencia.getFullYear() - nac.getFullYear(); if (referencia < new Date(referencia.getFullYear(), nac.getMonth(), nac.getDate())) vueltas--; }
 const volumen = romano(vueltas || 1);
 $('#lamina').textContent = `LÁMINA Nº ${vueltas || ''} · ${fechaAtlas(cumple || hoy)}`;
-$('#mano-hero').textContent = D.nota_portada || `feliz cumple ${D.edad_en_letras || vueltas || ''}, mi vida`.replace('  ', ' ');
+$('#mano-hero').textContent = D.nota_portada || `feliz cumple ${D.edad_en_letras || vueltas || ''}, mi rubia favorita`.replace('  ', ' ');
 function distanciaKm(a, b) {
   const R = 6371, rad = (g) => (g * Math.PI) / 180, dLa = rad(b.lat - a.lat), dLo = rad(b.lon - a.lon);
   const x = Math.sin(dLa / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLo / 2) ** 2;
@@ -710,11 +795,14 @@ if (U.tu?.lat != null && U.ella?.lat != null) {
   $('#coord-tu').textContent = coordTu; $('#coord-ella').textContent = coordElla;
 } else $('#km-bloque').remove();
 const numeros = [];
-if (nac) numeros.push({ k: 'NACIMIENTO', txt: fechaAtlas(nac), n: 'el día que se encendió' });
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const fechaLarga = (f) => `${f.getDate()} de ${MESES[f.getMonth()]} de ${f.getFullYear()}`;
+if (proximoCumple) numeros.push({ k: 'EL GRAN DÍA', txt: fechaLarga(proximoCumple), n: `sus ${D.edad_en_letras || vueltas} añitos` });
 if (nac) numeros.push({ k: 'VUELTAS AL SOL', num: vueltas, n: 'y contando' });
 if (nac) numeros.push({ k: 'DÍAS BRILLANDO', num: Math.round((referencia - nac) / 86400000), n: 'hasta hoy' });
 const amistad = parseFecha(D.inicio_amistad);
-if (amistad) numeros.push({ k: 'DÍAS DE AMISTAD', num: Math.floor((referencia - amistad) / 86400000), n: 'y los que faltan' });
+if (D.aventuras) numeros.push({ k: 'AVENTURAS JUNTAS', txt: D.aventuras, n: 'más de mil, y las que faltan' });
+else if (amistad) numeros.push({ k: 'DÍAS DE AMISTAD', num: Math.floor((referencia - amistad) / 86400000), n: 'y los que faltan' });
 else if (D.amigas_desde) numeros.push({ k: 'AMIGAS DESDE', txt: D.amigas_desde, n: 'y para siempre' });
 $('#numeros').innerHTML = numeros.map((x) => `<div class="numero revelar"><span class="k">${x.k}</span><b ${x.num != null ? `data-contar="${x.num}"` : ''}>${x.num != null ? 0 : esc(x.txt)}</b><span>${esc(x.n)}</span></div>`).join('');
 function contar(el, fin) {
@@ -726,10 +814,31 @@ function contar(el, fin) {
 /* ================= EL LIBRO ================= */
 const libro = { el: $('#libro'), paso: 0, hojas: [], moviendo: -1, modo: '' };
 function paginasLibro() {
-  const P = [{ t: 'dedicatoria' }];
-  (D.historia || []).forEach((c, i) => { P.push({ t: 'cap', ...c, num: romano(i + 1) }); P.push({ t: 'foto', ...c, giro: i % 2 ? 2 : -2 }); });
-  P.push({ t: 'fin' });
+  // Portada a la izquierda y su foto a la derecha. Después, cada capítulo ocupa un número par
+  // de páginas para que el texto quede siempre a la izquierda y sus fotos enfrente.
+  const P = [{ t: 'dedicatoria' }, { t: 'portada' }];
+  (D.historia || []).forEach((c, i) => {
+    const fotos = c.fotos && c.fotos.length ? c.fotos : c.foto ? [c.foto] : [];
+    const items = [...fotos.map((src) => ({ src })), ...(c.videos || []).map((src) => ({ src, video: true }))];
+    // Con muchas fotos, un par van debajo del texto y el resto se reparte en más páginas
+    const enTexto = items.length > 4 ? items.slice(0, 2) : [];
+    const resto = items.slice(enTexto.length);
+    let m = Math.max(1, Math.ceil(resto.length / 6)); if (m % 2 === 0) m++;
+    P.push({ t: 'cap', ...c, num: romano(i + 1), media: enTexto, ci: i });
+    for (let j = 0, desde = 0; j < m; j++) {
+      const cuantas = Math.floor(resto.length / m) + (j < resto.length % m ? 1 : 0);
+      P.push({ t: 'foto', ...c, media: resto.slice(desde, desde + cuantas), conPie: j === m - 1, giro: (i + j) % 2 ? 2 : -2, ci: i });
+      desde += cuantas;
+    }
+  });
+  P.push({ t: 'cierre' }, { t: 'fin' });
   return P;
+}
+const GIROS = [-4, 3, 2.5, -3, 4, -2.5, 3.5, -4, 2];
+function htmlMedia(it, i, titulo) {
+  const giro = `style="transform:rotate(${GIROS[i % GIROS.length]}deg)"`;
+  if (it.video) return `<button class="polaroid mini vid" data-video="${esc(it.src)}" aria-label="Ver video" ${giro}><video src="${esc(it.src)}#t=0.5" preload="metadata" muted playsinline></video><span class="play" aria-hidden="true">▶</span></button>`;
+  return `<div class="polaroid mini" ${giro}><img src="${esc(it.src)}" alt="${esc(titulo)}" loading="lazy"></div>`;
 }
 function htmlPagina(p, n) {
   const pie = n ? `<div class="pg-num"><span>${n}</span><span>${esc(String(D.nombre).toUpperCase())} · VOL. ${volumen}</span></div>` : '';
@@ -740,12 +849,24 @@ function htmlPagina(p, n) {
   if (p.t === 'cap') return `<span class="pg-mono">CAPÍTULO ${p.num}</span><h3 class="pg-titulo">${esc(p.titulo)}</h3><div class="pg-regla"></div>
     <p class="pg-texto">${esc(p.texto)}</p>
     ${p.coordenadas && km ? `<div class="pg-coords"><span>${coordTu} — ${esc(String(U.tu.ciudad).toUpperCase())}</span><span>${coordElla} — ${esc(String(U.ella.ciudad).toUpperCase())}</span></div>` : ''}
-    ${p.nota ? `<span class="pg-nota">${esc(p.nota)}</span>` : ''}${pie}`;
-  if (p.t === 'foto') return `<div class="pg-centro"><div class="polaroid" style="transform:rotate(${p.giro}deg)">
-    ${p.foto ? `<img src="${esc(p.foto)}" alt="${esc(p.titulo)}" loading="lazy">` : `<div class="sin-foto">[ FOTO · ${esc(String(p.titulo || '').toUpperCase())} ]</div>`}</div>
-    ${p.pie ? `<span class="pg-pie">${esc(p.pie)}</span>` : ''}</div>${pie}`;
-  if (p.t === 'fin') return `<div class="pg-centro"><span class="pg-mono">FIN DEL VOLUMEN ${volumen}</span>
-    <h3 class="pg-titulo">Continuará…</h3><span class="pg-nota">lo mejor todavía no se ha escrito</span>
+    ${p.nota ? `<span class="pg-nota">${esc(p.nota)}</span>` : ''}
+    ${p.media.length ? `<div class="pg-media">${p.media.map((it, i) => htmlMedia(it, i + 5, p.titulo)).join('')}</div>` : ''}${pie}`;
+  if (p.t === 'foto') {
+    const pieFoto = p.conPie && p.pie ? `<span class="pg-pie">${esc(p.pie)}</span>` : '';
+    const hayVideo = p.media.some((it) => it.video) ? `<span class="pg-mono">TOCA UN VIDEO PARA VERLO ▶</span>` : '';
+    if (p.media.length === 1 && !p.media[0].video) return `<div class="pg-centro"><div class="polaroid" style="transform:rotate(${p.giro}deg)">
+      <img src="${esc(p.media[0].src)}" alt="${esc(p.titulo)}" loading="lazy"></div>${pieFoto}</div>${pie}`;
+    if (!p.media.length) return `<div class="pg-centro"><div class="polaroid" style="transform:rotate(${p.giro}deg)">
+      <div class="sin-foto">[ FOTO · ${esc(String(p.titulo || '').toUpperCase())} ]</div></div>${pieFoto}</div>${pie}`;
+    return `<div class="pg-centro"><div class="collage${p.media.length > 4 ? ' muchas' : ''}">${p.media.map((it, i) => htmlMedia(it, i, p.titulo)).join('')}</div>
+      ${hayVideo}${pieFoto}</div>${pie}`;
+  }
+  if (p.t === 'portada') return `<div class="pg-centro"><div class="polaroid portada" style="transform:rotate(2deg)">
+    ${D.portada ? `<img src="${esc(D.portada)}" alt="${esc(D.nombre)} y ${esc(D.tu_nombre)}">` : `<div class="sin-foto">[ FOTO DE PORTADA ]</div>`}</div>
+    <span class="pg-pie">${esc(D.nombre)} &amp; ${esc(D.tu_nombre)}</span></div>`;
+  if (p.t === 'cierre') return `<div class="pg-centro"><span class="pg-mono">FIN DEL VOLUMEN ${volumen}</span>
+    <h3 class="pg-titulo">Esta historia continuará…</h3></div>`;
+  if (p.t === 'fin') return `<div class="pg-centro"><span class="pg-nota">lo mejor todavía no se ha escrito</span>
     <span class="pg-mono">VOLUMEN ${romano((vueltas || 1) + 1)} · ${(cumple || hoy).getFullYear() + 1}</span></div>`;
   return '';
 }
@@ -754,7 +875,7 @@ function construirLibro() {
   if (modo === libro.modo) return;
   const P = paginasLibro(), ultima = P.length - 1;
   const visible = libro.modo === 'doble' ? libro.paso * 2 : libro.paso;
-  libro.modo = modo; libro.el.innerHTML = '';
+  libro.modo = modo; libro.P = P; libro.el.innerHTML = '';
   const caras = [];
   if (modo === 'doble') {
     libro.el.insertAdjacentHTML('beforeend', `<div class="pagina izq"><div class="pg">${htmlPagina(P[0], 0)}</div></div><div class="pagina der"><div class="pg">${htmlPagina(P[ultima], 0)}</div></div>`);
@@ -788,8 +909,9 @@ function pintarLibro(sinAnimar) {
   $('#libro-ant').disabled = libro.paso === 0;
   $('#libro-sig').disabled = libro.paso === N;
   const caps = (D.historia || []).length;
-  const cap = libro.modo === 'doble' ? libro.paso + 1 : Math.ceil(libro.paso / 2);
-  $('#libro-indicador').textContent = libro.paso === N ? 'FIN DEL VOLUMEN' : cap >= 1 && cap <= caps ? `CAPÍTULO ${cap} DE ${caps}` : 'TOCA LA PÁGINA PARA EMPEZAR';
+  const vistas = libro.modo === 'doble' ? [libro.P[2 * libro.paso], libro.P[2 * libro.paso + 1]] : [libro.P[libro.paso]];
+  const pg = vistas.find((x) => x && x.ci != null);
+  $('#libro-indicador').textContent = libro.paso === N ? 'FIN DEL VOLUMEN' : pg ? `CAPÍTULO ${pg.ci + 1} DE ${caps}` : 'TOCA LA PÁGINA PARA EMPEZAR';
 }
 let tLibro;
 function pasarPagina(dir) {
@@ -799,6 +921,13 @@ function pasarPagina(dir) {
   libro.paso = nuevo; pintarLibro();
   clearTimeout(tLibro); tLibro = setTimeout(() => { libro.moviendo = -1; pintarLibro(); }, 1150);
 }
+// Tocar un video del libro lo abre en grande (y no pasa la página)
+libro.el.addEventListener('click', (e) => {
+  const v = e.target.closest('.vid'); if (!v) return;
+  e.stopPropagation();
+  if (musicaSonando()) pausarMusica();
+  abrirModal(`<video src="${esc(v.dataset.video)}" controls autoplay playsinline></video>`);
+}, true);
 $('#libro-ant').onclick = () => pasarPagina(-1);
 $('#libro-sig').onclick = () => pasarPagina(1);
 let toqueX = null;
@@ -848,7 +977,7 @@ $('#modal').onclick = (e) => { if (e.target.id === 'modal') cerrarModal(); };
 addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarModal(); });
 function abrirMensaje(i, boton) {
   const m = msgs[i];
-  if (!audio.paused && m.video) pausarMusica();
+  if (musicaSonando() && m.video) pausarMusica();
   abrirModal(`<div class="desde">${m.desde ? 'desde ' + esc(m.desde) : 'un mensaje'}</div><div class="de">${esc(m.de)}</div>
     <div class="msg">${esc(m.texto)}</div>${m.foto ? `<img src="${esc(m.foto)}" alt="">` : ''}${videoHTML(m.video)}`);
   boton.classList.add('abierta');
@@ -860,16 +989,17 @@ function abrirMensaje(i, boton) {
 
 /* ================= MÚSICA (SPOTIFY) ================= */
 function spotifyEmbed(url, alto) {
-  const m = (url || '').match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(track|playlist|album|episode)\/([A-Za-z0-9]+)/);
+  const m = idSpotify(url);
   if (!m) return '';
   return `<iframe class="spotify" src="https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0" height="${alto}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
 }
 const pl = spotifyEmbed(D.playlist, 380);
 if (pl) $('#playlist').innerHTML = pl; else $('#playlist').remove();
 $('#canciones').innerHTML = (D.canciones || []).map((c, i) => `
-  <div class="cancion revelar"><div class="cab"><div class="vinilo"></div><div><div class="num">PISTA ${String(i + 1).padStart(2, '0')}</div><h3>${esc(c.titulo)}</h3></div></div>
+  <div class="cancion revelar"><div class="cab"><div class="vinilo"></div><div><div class="num">PISTA ${String(i + 1).padStart(2, '0')}</div><h3>${esc(c.titulo)}</h3>${c.artista ? `<div class="num">${esc(c.artista)}</div>` : ''}</div></div>
   ${c.porque ? `<p>${esc(c.porque)}</p>` : ''}
-  ${spotifyEmbed(c.spotify, 152) || '<div class="spotify-vacio">AQUÍ VA EL LINK DE SPOTIFY DE ESTA CANCIÓN</div>'}</div>`).join('');
+  ${spotifyEmbed(c.spotify, 152) || '<div class="spotify-vacio">AQUÍ VA EL LINK DE SPOTIFY DE ESTA CANCIÓN</div>'}
+  ${c.spotify ? `<a class="abrir-spotify" href="${esc(c.spotify)}" target="_blank" rel="noopener">ABRIR EN SPOTIFY ↗</a>` : ''}</div>`).join('');
 
 /* ================= RAZONES ================= */
 const razones = [...(D.razones || [])].sort(() => Math.random() - 0.5);

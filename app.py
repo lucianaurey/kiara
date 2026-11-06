@@ -26,7 +26,7 @@ STATIC = RAIZ / "static"
 FORMATOS_FOTO = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 
 st.set_page_config(
-    page_title=f"Feliz cumpleaños, {DATOS['nombre']} ✨",
+    page_title=f"Feliz cumpleaños mi rubia favorita, {DATOS['nombre']} ✨",
     page_icon="🌟",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -55,13 +55,13 @@ st.markdown(
 def foto_a_base64(ruta: str, modificado: float) -> str:
     """Achica la foto y la incrusta en la página (así carga rápido en el celular)."""
     img = ImageOps.exif_transpose(Image.open(STATIC / ruta))
-    img.thumbnail((1400, 1400))
+    img.thumbnail((900, 900))
     if img.mode not in ("RGB", "L"):
         fondo = Image.new("RGB", img.size, (255, 255, 255))
         fondo.paste(img, mask=img.convert("RGBA").split()[-1])
         img = fondo
     buf = io.BytesIO()
-    img.convert("RGB").save(buf, "JPEG", quality=82, optimize=True)
+    img.convert("RGB").save(buf, "JPEG", quality=78, optimize=True)
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
@@ -86,8 +86,11 @@ def archivo(ruta: str) -> str:
 def preparar_datos() -> dict:
     datos = copy.deepcopy(DATOS)
     datos["musica_fondo"] = archivo(datos.get("musica_fondo", ""))
+    datos["portada"] = archivo(datos.get("portada", ""))
     for hito in datos.get("historia", []):
         hito["foto"] = archivo(hito.get("foto", ""))
+        hito["fotos"] = [f for f in map(archivo, hito.get("fotos", [])) if f]
+        hito["videos"] = [v for v in map(archivo, hito.get("videos", [])) if v]
     for msg in datos.get("mensajes", []):
         msg["foto"] = archivo(msg.get("foto", ""))
         msg["video"] = archivo(msg.get("video", ""))
